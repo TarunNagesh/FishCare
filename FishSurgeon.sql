@@ -9,6 +9,12 @@ CREATE TABLE Surgeons (
     LastName TEXT,
     Hours INT
 );
+CREATE TABLE Fish(
+    FishID INT NOT NULL PRIMARY KEY,
+    Notes LONGTEXT,
+    GENDER TEXT,
+    SPECIES TEXT
+);
 CREATE TABLE Procedures (
     EmpID INT NOT NULL,
     ProcID INT NOT NULL PRIMARY KEY ,
@@ -21,10 +27,6 @@ CREATE TABLE Procedures (
     CONSTRAINT fk02 FOREIGN KEY (FishID)
         REFERENCES Fish(FishID)
 );
-CREATE TABLE Fish(
-    FishID INT NOT NULL PRIMARY KEY,
-    Notes LONGTEXT
-)
 CREATE TABLE FishProcDate (
     FishID INT NOT NULL,
     ProcDate DATETIME NOT NULL,
@@ -49,3 +51,4 @@ CREATE TABLE Tools (
     CONSTRAINT fk05 FOREIGN KEY (ProcID)
         REFERENCES Procedures(ProcID)
 );
+
