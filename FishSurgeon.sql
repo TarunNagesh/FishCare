@@ -1,3 +1,4 @@
+DROP DATABASE FishCare;
 CREATE DATABASE FishCare;
 USE FishCare;
 
