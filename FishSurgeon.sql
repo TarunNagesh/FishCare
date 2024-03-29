@@ -2,7 +2,6 @@ DROP DATABASE FishCare;
 CREATE DATABASE FishCare;
 USE FishCare;
 
-
 CREATE TABLE Employees (
     EmpID INT NOT NULL PRIMARY KEY,
     ManagerID INT NOT NULL,
@@ -22,74 +21,88 @@ CREATE TABLE Keeper (
 CREATE TABLE Surgeons (
     SurgeonID INT NOT NULL PRIMARY KEY,
     Certification TEXT,
-    CONSTRAINT fk00 FOREIGN KEY (SurgeonID)
+    CONSTRAINT fk01 FOREIGN KEY (SurgeonID)
         REFERENCES Employees(EmpID)
         ON UPDATE CASCADE ON DELETE RESTRICT
 );
 CREATE TABLE Managers (
     ManagerID INT NOT NULL PRIMARY KEY,
     Budget INT,
-    CONSTRAINT fk01 FOREIGN KEY (ManagerID)
+    CONSTRAINT fk02 FOREIGN KEY (ManagerID)
         REFERENCES Employees(EmpID)
         ON UPDATE CASCADE ON DELETE RESTRICT
 );
-CREATE TABLE I
-CREATE TABLE Reports (
-    FishID INT NOT NULL,
-    MadeBy INT NULL,
+CREATE TABLE Ichthyologist (
+    IchID INT NOT NULL PRIMARY KEY,
+    Certification TEXT,
+    CONSTRAINT fk03 FOREIGN KEY (IchID)
+        REFERENCES Employees(EmpID)
+        ON UPDATE CASCADE ON DELETE RESTRICT
+);
+
+CREATE TABLE Plans (
+    PlanID INT NOT NULL PRIMARY KEY,
+    MadeBy INT NOT NULL,
+    ApprovedBy INT NOT NULL,
     Type TEXT,
-    Description LONGTEXT,
-    CONSTRAINT fk01 FOREIGN KEY (FishID)
-        REFERENCES Fish(FishID)
+    Details LONGTEXT,
+    Status TEXT,
+    Cost INT,
+    CONSTRAINT fk04 FOREIGN KEY (MadeBy)
+        REFERENCES Ichthyologist(IchID)
         ON UPDATE CASCADE ON DELETE RESTRICT,
-    CONSTRAINT fk01 FOREIGN KEY (MadeBy)
-        REFERENCES Keeper(KeeperID)
+    CONSTRAINT fk05 FOREIGN KEY (ApprovedBy)
+        REFERENCES Managers(ManagerID)
         ON UPDATE CASCADE ON DELETE RESTRICT
 );
 CREATE TABLE Tanks (
     TankID INT NOT NULL PRIMARY KEY,
+    ManagedBy INT NOT NULL,
+    OverseedBy INT NOT NULL,
     Temp INT NOT NULL,
     TimeCleaned DATETIME,
     WaterType TEXT,
     PHlevel INT,
     Food TEXT,
     TimeFed DATETIME,
-    ManagerID INT NOT NULL,
     Status TEXT,
-    CONSTRAINT fk02 FOREIGN KEY (ManagerID)
+    CONSTRAINT fk09 FOREIGN KEY (ManagedBy)
         REFERENCES Managers(ManagerID)
+        ON UPDATE CASCADE ON DELETE RESTRICT,
+    CONSTRAINT fk10 FOREIGN KEY (OverseedBy)
+        REFERENCES Ichthyologist(IchID)
         ON UPDATE CASCADE ON DELETE RESTRICT
 );
 CREATE TABLE Fish(
     FishID INT NOT NULL PRIMARY KEY,
-    TankID INT NOT NULL,
-    ManagerID INT NOT NULL,
-    KeeperID INT NOT NULL,
+    HousedIn INT NOT NULL,
+    ManagedBy INT NOT NULL,
+    KeptBy INT NOT NULL,
     Notes LONGTEXT,
     Sex TEXT,
     Species TEXT,
     Status TEXT,
-    CONSTRAINT fk03 FOREIGN KEY (TankID)
+    CONSTRAINT fk11 FOREIGN KEY (HousedIn)
         REFERENCES Tanks(TankID)
         ON UPDATE CASCADE ON DELETE RESTRICT,
-    CONSTRAINT fk04 FOREIGN KEY (ManagerID)
+    CONSTRAINT fk12 FOREIGN KEY (ManagedBy)
         REFERENCES Managers(ManagerID)
         ON UPDATE CASCADE ON DELETE RESTRICT,
-    CONSTRAINT fk05 FOREIGN KEY (KeeperID)
+    CONSTRAINT fk13 FOREIGN KEY (KeptBy)
         REFERENCES Keeper(KeeperID)
         ON UPDATE CASCADE ON DELETE RESTRICT
 );
 CREATE TABLE Procedures (
-    SurgeonID INT NOT NULL,
+    Surgeon INT NOT NULL,
     ProcID INT NOT NULL PRIMARY KEY ,
-    FishID INT NOT NULL,
+    Fish INT NOT NULL,
     Description LONGTEXT,
     Type TEXT,
     Result TEXT,
-    CONSTRAINT fk05 FOREIGN KEY (SurgeonID)
+    CONSTRAINT fk14 FOREIGN KEY (Surgeon)
         REFERENCES Surgeons(SurgeonID)
         ON UPDATE CASCADE ON DELETE RESTRICT,
-    CONSTRAINT fk06 FOREIGN KEY (FishID)
+    CONSTRAINT fk15 FOREIGN KEY (Fish)
         REFERENCES Fish(FishID)
         ON UPDATE CASCADE ON DELETE RESTRICT
 );
@@ -97,37 +110,53 @@ CREATE TABLE FishProcDate (
     FishID INT NOT NULL,
     ProcDate DATETIME NOT NULL,
     PRIMARY KEY (FishId, ProcDate),
-    CONSTRAINT fk07 FOREIGN KEY (FishID)
+    CONSTRAINT fk16 FOREIGN KEY (FishID)
         REFERENCES Fish(FishID)
         ON UPDATE CASCADE ON DELETE RESTRICT
 );
 CREATE TABLE Prescriptions (
-    ProcID INT NOT NULL,
+    ProcFor INT NOT NULL,
     MedID INT NOT NULL,
     Medicine TEXT,
     Dosage FLOAT,
-    PRIMARY KEY (ProcID, MedID),
-    CONSTRAINT fk08 FOREIGN KEY (ProcID)
+    PRIMARY KEY (ProcFor, MedID),
+    CONSTRAINT fk17 FOREIGN KEY (ProcFor)
         REFERENCES Procedures(ProcID)
         ON UPDATE CASCADE ON DELETE RESTRICT
 );
 CREATE TABLE Tools (
     ToolID INT NOT NULL PRIMARY KEY,
-    ProcID INT NOT NULL,
+    ProcUsedIn INT NOT NULL,
     Type TEXT,
     Status TEXT,
-    CONSTRAINT fk09 FOREIGN KEY (ProcID)
+    CONSTRAINT fk18 FOREIGN KEY (ProcUsedIn)
         REFERENCES Procedures(ProcID)
         ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
 CREATE TABLE Finances (
     TransactionID INT NOT NULL PRIMARY KEY,
-    ManagerID INT NOT NULL,
+    ManagedBy INT NOT NULL,
     Recievables INT,
     Payables INT,
     DateSent DATETIME,
-    CONSTRAINT fk10 FOREIGN KEY (ManagerID)
+    CONSTRAINT fk19 FOREIGN KEY (ManagedBy)
         REFERENCES Managers(ManagerID)
+        ON UPDATE CASCADE ON DELETE RESTRICT
+);
+CREATE TABLE Reports (
+    FishID INT NOT NULL,
+    MadeBy INT NOT NULL,
+    SentTo INT NOT NULL,
+    Type TEXT,
+    Description LONGTEXT,
+    CONSTRAINT fk06 FOREIGN KEY (FishID)
+        REFERENCES Fish(FishID)
+        ON UPDATE CASCADE ON DELETE RESTRICT,
+    CONSTRAINT fk07 FOREIGN KEY (MadeBy)
+        REFERENCES Keeper(KeeperID)
+        ON UPDATE CASCADE ON DELETE RESTRICT,
+    CONSTRAINT fk08 FOREIGN KEY (SentTo)
+        REFERENCES Ichthyologist(IchID)
         ON UPDATE CASCADE ON DELETE RESTRICT
 );
