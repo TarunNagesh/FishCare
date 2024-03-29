@@ -4,13 +4,16 @@ USE FishCare;
 
 CREATE TABLE Employees (
     EmpID INT NOT NULL PRIMARY KEY,
-    ManagerID INT NOT NULL,
+    ManagerID INT,
     FirstName TEXT,
     MiddleInitial TEXT,
     LastName TEXT,
-    Role TEXT,
     Hours INT,
-    Address VARCHAR(75)
+    Address VARCHAR(75),
+    CONSTRAINT fk0 FOREIGN KEY (ManagerID)
+        REFERENCES Employees(EmpID)
+        ON UPDATE CASCADE ON DELETE RESTRICT
+
 );
 CREATE TABLE Keeper (
     KeeperID INT NOT NULL PRIMARY KEY,
