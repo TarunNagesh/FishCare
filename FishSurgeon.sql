@@ -12,8 +12,9 @@ CREATE TABLE Surgeons (
 CREATE TABLE Fish(
     FishID INT NOT NULL PRIMARY KEY,
     Notes LONGTEXT,
-    GENDER TEXT,
-    SPECIES TEXT
+    Sex TEXT,
+    Species TEXT,
+    Status TEXT,
 );
 CREATE TABLE Procedures (
     EmpID INT NOT NULL,
@@ -51,4 +52,21 @@ CREATE TABLE Tools (
     CONSTRAINT fk05 FOREIGN KEY (ProcID)
         REFERENCES Procedures(ProcID)
 );
+CREATE TABLE Employees (
+    EmpID INT NOT NULL PRIMARY KEY,
+    FirstName TEXT,
+    MiddleInitial TEXT,
+    LastName TEXT,
+    Role TEXT
+);
+CREATE TABLE Finances (
+    TransactionID INT NOT NULL PRIMARY KEY,
+    Recievables INT,
+    Payables INT,
+    DateSent DATETIME
+);
+CREATE TABLE Tanks (
+    TankID INT NOT NULL PRIMARY KEY,
+    Status TEXT,
 
+)
