@@ -10,18 +10,41 @@ CREATE TABLE Employees (
     MiddleInitial TEXT,
     LastName TEXT,
     Role TEXT,
-    Hours INT
+    Hours INT,
+    Address VARCHAR(75)
+);
+CREATE TABLE Keeper (
+    KeeperID INT NOT NULL PRIMARY KEY,
+    CONSTRAINT fk00 FOREIGN KEY (KeeperID)
+        REFERENCES Employees(EmpID)
+        ON UPDATE CASCADE ON DELETE RESTRICT
 );
 CREATE TABLE Surgeons (
     SurgeonID INT NOT NULL PRIMARY KEY,
+    Certification TEXT,
     CONSTRAINT fk00 FOREIGN KEY (SurgeonID)
         REFERENCES Employees(EmpID)
+        ON UPDATE CASCADE ON DELETE RESTRICT
 );
 CREATE TABLE Managers (
     ManagerID INT NOT NULL PRIMARY KEY,
     Budget INT,
     CONSTRAINT fk01 FOREIGN KEY (ManagerID)
         REFERENCES Employees(EmpID)
+        ON UPDATE CASCADE ON DELETE RESTRICT
+);
+CREATE TABLE I
+CREATE TABLE Reports (
+    FishID INT NOT NULL,
+    MadeBy INT NULL,
+    Type TEXT,
+    Description LONGTEXT,
+    CONSTRAINT fk01 FOREIGN KEY (FishID)
+        REFERENCES Fish(FishID)
+        ON UPDATE CASCADE ON DELETE RESTRICT,
+    CONSTRAINT fk01 FOREIGN KEY (MadeBy)
+        REFERENCES Keeper(KeeperID)
+        ON UPDATE CASCADE ON DELETE RESTRICT
 );
 CREATE TABLE Tanks (
     TankID INT NOT NULL PRIMARY KEY,
@@ -41,6 +64,7 @@ CREATE TABLE Fish(
     FishID INT NOT NULL PRIMARY KEY,
     TankID INT NOT NULL,
     ManagerID INT NOT NULL,
+    KeeperID INT NOT NULL,
     Notes LONGTEXT,
     Sex TEXT,
     Species TEXT,
@@ -50,17 +74,20 @@ CREATE TABLE Fish(
         ON UPDATE CASCADE ON DELETE RESTRICT,
     CONSTRAINT fk04 FOREIGN KEY (ManagerID)
         REFERENCES Managers(ManagerID)
+        ON UPDATE CASCADE ON DELETE RESTRICT,
+    CONSTRAINT fk05 FOREIGN KEY (KeeperID)
+        REFERENCES Keeper(KeeperID)
         ON UPDATE CASCADE ON DELETE RESTRICT
 );
 CREATE TABLE Procedures (
-    EmpID INT NOT NULL,
+    SurgeonID INT NOT NULL,
     ProcID INT NOT NULL PRIMARY KEY ,
     FishID INT NOT NULL,
     Description LONGTEXT,
     Type TEXT,
     Result TEXT,
-    CONSTRAINT fk05 FOREIGN KEY (EmpID)
-        REFERENCES Surgeons(EmpID)
+    CONSTRAINT fk05 FOREIGN KEY (SurgeonID)
+        REFERENCES Surgeons(SurgeonID)
         ON UPDATE CASCADE ON DELETE RESTRICT,
     CONSTRAINT fk06 FOREIGN KEY (FishID)
         REFERENCES Fish(FishID)
