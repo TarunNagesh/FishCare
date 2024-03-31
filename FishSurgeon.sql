@@ -211,7 +211,7 @@ INSERT INTO FishProcDate
     VALUES (1, CURRENT_TIMESTAMP),
            (2, CURRENT_TIMESTAMP),
            (4, CURRENT_TIMESTAMP),
-           (4, CURRENT_TIMESTAMP);
+           (4, '2023-03-31 19:05:47');
 INSERT INTO Prescriptions
     VALUES (9999, 82792, 'Advil', 1.5),
            (9997, 92973, 'CPR', 1.0),
