@@ -163,3 +163,9 @@ CREATE TABLE Reports (
         REFERENCES Ichthyologist(IchID)
         ON UPDATE CASCADE ON DELETE RESTRICT
 );
+
+INSERT INTO Surgeons(Certification, SurgeonID)
+VALUES('PhD in Marine Biology at UCLA', 1);
+
+INSERT INTO Surgeons(Certification, SurgeonID)
+VALUES('PhD in Vetrinary Studies at Northeastern', 2);
