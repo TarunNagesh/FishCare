@@ -61,6 +61,7 @@ CREATE TABLE Tanks (
     TankID INT NOT NULL PRIMARY KEY,
     ManagedBy INT NOT NULL,
     OverseenBy INT NOT NULL,
+    AssignedTo INT NOT NULL,
     Temp INT NOT NULL,
     TimeCleaned DATETIME,
     WaterType TEXT,
@@ -73,6 +74,9 @@ CREATE TABLE Tanks (
         ON UPDATE CASCADE ON DELETE RESTRICT,
     CONSTRAINT fk10 FOREIGN KEY (OverseenBy)
         REFERENCES Ichthyologist(IchID)
+        ON UPDATE CASCADE ON DELETE RESTRICT,
+    CONSTRAINT fk11 FOREIGN KEY (AssignedTo)
+        REFERENCES Keeper(KeeperID)
         ON UPDATE CASCADE ON DELETE RESTRICT
 );
 CREATE TABLE Fish(
@@ -83,7 +87,7 @@ CREATE TABLE Fish(
     Sex TEXT,
     Species TEXT,
     Status TEXT,
-    CONSTRAINT fk11 FOREIGN KEY (HousedIn)
+    CONSTRAINT fk12 FOREIGN KEY (HousedIn)
         REFERENCES Tanks(TankID)
         ON UPDATE CASCADE ON DELETE RESTRICT,
     CONSTRAINT fk13 FOREIGN KEY (KeptBy)
@@ -190,11 +194,11 @@ INSERT INTO Plans
             'Fish in tank seem to be cramped: could benefit from separating entities',
             'Denied', 10);
 INSERT INTO Tanks
-    VALUES (1000, 0002, 0007, 79, CURRENT_TIMESTAMP, 'Fresh Water',
+    VALUES (1000, 0002, 0007, 0005, 79, CURRENT_TIMESTAMP, 'Fresh Water',
             7.3, 'PetCo', CURRENT_TIMESTAMP, 'Active'),
-        (2000, 0002, 0008, 75, CURRENT_TIMESTAMP, 'Salt Water',
+        (2000, 0002, 0008, 0006, 75, CURRENT_TIMESTAMP, 'Salt Water',
          7.1, 'PetSmart', CURRENT_TIMESTAMP, 'Active'),
-        (3000, 0002, 0007, 78, CURRENT_TIMESTAMP, 'Fresh Water',
+        (3000, 0002, 0007, 0006, 78, CURRENT_TIMESTAMP, 'Fresh Water',
          6.9, 'NontenotHungry', CURRENT_TIMESTAMP, 'Inactive');
 INSERT INTO Fish
     VALUES (1, 1000, 0005, 'Lorem Ipsum Switch', 'F', 'Sturgeon', 'Alive'),
