@@ -11,8 +11,8 @@ def plans():
     # get a cursor object from the database
     cursor = db.get_db().cursor()
 
-    # use cursor to query the database for a list of planss
-    # cursor.execute('SELECT id, plans_code, plans_name, list_price FROM planss')
+    # use cursor to query the database for a list of plans
+    # cursor.execute('SELECT id, plans_code, plans_name, list_price FROM plans')
     cursor.execute('')
 
     # grab the column headers from the returned data
@@ -35,7 +35,7 @@ def plans():
 @plans.route('/plans/<id>', methods=['GET'])
 def get_plans_detail (id):
 
-    query = 'SELECT PlanID, MadeBy, ApprovedBy, Type, Details, Status, Cost FROM plans WHERE id = ' + str(id)
+    query = 'SELECT PlanID, MadeBy, ApprovedBy, Type, Details, Status, Cost FROM plans WHERE PlanID = ' + str(id)
     current_app.logger.info(query)
 
     cursor = db.get_db().cursor()
@@ -48,7 +48,7 @@ def get_plans_detail (id):
     return jsonify(json_data)
     
 
-@planss.route('/plans', methods=['POST'])
+@plans.route('/plans', methods=['POST'])
 def add_new_plans():
     
     # collecting data from the request object 
@@ -65,11 +65,14 @@ def add_new_plans():
     cost = the_data['Cost']
 
     # Constructing the query
-    query = 'insert into plans (plans_name, description, category, list_price) values ("'
-    query += name + '", "'
-    query += description + '", "'
-    query += category + '", '
-    query += str(price) + ')'
+    query = 'insert into plans (PlanID, MadeBy, ApprovedBy, Type, Details, Status, Cost) values ("'
+    query += id + '", "'
+    query += madeBy + '", "'
+    query += approvedBy + '", "'
+    query += type + '", "'
+    query += details + '", "'
+    query += status + '", "'
+    query += str(cost) + ')'
     current_app.logger.info(query)
 
     # executing and committing the insert statement 
@@ -78,26 +81,3 @@ def add_new_plans():
     db.get_db().commit()
     
     return 'Success!'
-
-### Get all plans categories
-@planss.route('/categories', methods = ['GET'])
-def get_all_categories():
-    query = '''
-        SELECT DISTINCT category AS label, category as value
-        FROM planss
-        WHERE category IS NOT NULL
-        ORDER BY category
-    '''
-
-    cursor = db.get_db().cursor()
-    cursor.execute(query)
-
-    json_data = []
-    # fetch all the column headers and then all the data from the cursor
-    column_headers = [x[0] for x in cursor.description]
-    theData = cursor.fetchall()
-    # zip headers and data together into dictionary and then append to json data dict.
-    for row in theData:
-        json_data.append(dict(zip(column_headers, row)))
-    
-    return jsonify(json_data)
