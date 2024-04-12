@@ -8,28 +8,24 @@ plans = Blueprint('plans', __name__)
 # Get all the plans from the database
 @plans.route('/plans', methods=['GET'])
 def plans():
-    # get a cursor object from the database
+    query = '''
+        SELECT DISTINCT Type AS Label
+        FROM plans
+        WHERE Type IS NOT NULL
+        ORDER BY Type
+    '''
+
     cursor = db.get_db().cursor()
+    cursor.execute(query)
 
-    # use cursor to query the database for a list of plans
-    # cursor.execute('SELECT id, plans_code, plans_name, list_price FROM plans')
-    cursor.execute('')
-
-    # grab the column headers from the returned data
-    column_headers = [x[0] for x in cursor.description]
-
-    # create an empty dictionary object to use in 
-    # putting column headers together with data
     json_data = []
-
-    # fetch all the data from the cursor
+    # fetch all the column headers and then all the data from the cursor
+    column_headers = [x[0] for x in cursor.description]
     theData = cursor.fetchall()
-
-    # for each of the rows, zip the data elements together with
-    # the column headers. 
+    # zip headers and data together into dictionary and then append to json data dict.
     for row in theData:
         json_data.append(dict(zip(column_headers, row)))
-
+    
     return jsonify(json_data)
 
 @plans.route('/plans/<id>', methods=['GET'])
