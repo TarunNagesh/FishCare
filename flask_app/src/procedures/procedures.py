@@ -116,10 +116,6 @@ def delete_procedure():
     cursor = db.get_db().cursor()
     cursor.execute(query)
     db.get_db().commit()
-
-    cursor = db.get_db().cursor()
-    r = cursor.execute(query, data)
-    db.get_db().commit()
     return 'Procedure deleted!'
 
 # Return all procedure types
