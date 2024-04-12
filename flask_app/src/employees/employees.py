@@ -3,11 +3,11 @@ import json
 from src import db
 
 
-tanks = Blueprint('Employees', __name__)
+employees = Blueprint('employees', __name__)
 
 # Get all the employees from the database
-@Employees.route('/Employees', methods=['GET'])
-def Employees():
+@employees.route('/employees', methods=['GET'])
+def employees():
     # get a cursor object from the database
     cursor = db.get_db().cursor()
 
@@ -33,7 +33,7 @@ def Employees():
     return jsonify(json_data)
 
 # Gets the manager's ID and name from a specific employee
-@Employees.route('/Employees/<ManagerID>', methods=['GET'])
+@employees.route('/employees/<ManagerID>', methods=['GET'])
 def get_manager (id):
 
     query = 'SELECT ManagerID, FirstName, LastName FROM Employees WHERE EmpID = ' + str(id)
