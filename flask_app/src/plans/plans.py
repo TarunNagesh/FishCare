@@ -81,3 +81,33 @@ def add_new_plans():
     db.get_db().commit()
     
     return 'Success!'
+
+
+@plans.route('/plans', methods=['PUT'])
+def update_plans():
+    
+    # collecting data from the request object 
+    the_data = request.json
+    current_app.logger.info(the_data)
+
+    #extracting the variable
+    id = the_data['PlanId']
+    madeBy = the_data['MadeBy']
+    approvedBy = the_data['ApprovedBy']
+    type = the_data['Type']
+    details = the_data['Details']
+    status = the_data['Status']
+    cost = the_data['Cost']
+
+
+    # Constructing the query
+    query = 'UPDATE plans SET MadeBy = %s, ApprovedBy = %s, Type = %s, Details = %s, Status = %s, Cost = %s, WHERE PlanID = %s'
+    current_app.logger.info(query)
+    
+    
+    # executing and committing the update statement 
+    cursor = db.get_db().cursor()
+    cursor.execute(query, (madeBy, approvedBy, type, details, status, cost, id))
+    db.get_db().commit()
+    
+    return 'Success!'
