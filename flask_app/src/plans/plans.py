@@ -107,3 +107,35 @@ def update_plans():
     db.get_db().commit()
     
     return 'Success!'
+
+# Delete a prescription given an ID
+@plans.route('/plans/<id>', methods = ['DELETE'])
+def delete_prescription():
+    the_data = request.json
+    current_app.logger.info(the_data) 
+
+    id = the_data['PlanID']
+
+    query = 'DELETE FROM plans WHERE medid = ' + id
+    current_app.logger.info(query)
+
+    # executing and committing the insert statement 
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    db.get_db().commit()
+    return 'Prescription deleted!'
+
+# Delete plans where status = 'Denied'
+@plans.route('/plans', methods = ['DELETE'])
+def delete_empty_plans():
+    the_data = request.json
+    current_app.logger.info(the_data) 
+
+    query = 'DELETE FROM plans WHERE Status = "Denied"'
+    current_app.logger.info(query)
+
+    # executing and committing the insert statement 
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    db.get_db().commit()
+    return 'Prescription deleted!'
