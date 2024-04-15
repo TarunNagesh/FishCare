@@ -7,7 +7,8 @@ finances = Blueprint('finances', __name__)
 
 # Get all the plans from the database
 @finances.route('/finances', methods=['GET'])
-def finances():
+def get_finances():
+    """ gets finances """ 
     # get a cursor object from the database
     cursor = db.get_db().cursor()
 
@@ -32,10 +33,9 @@ def finances():
 
     return jsonify(json_data)
 
-
 @finances.route('/finances', methods=['POST'])
 def add_new_plans():
-    
+    """ adds a new plan """ 
     # collecting data from the request object 
     the_data = request.json
     current_app.logger.info(the_data)
@@ -63,9 +63,8 @@ def add_new_plans():
     
     return 'Success!'
 
-    # get all finances given a date 
 @finances.route('/finances/<date>', methods=['GET'])
-def get_finances_author(date): # idk if this works 
+def get_transaction_author(date): # idk if this works 
     """ gets all finances on sent on a given date """ 
     query = 'SELECT * FROM finances WHERE DateSent = ' + str(date)
     current_app.logger.info(query)

@@ -2,12 +2,11 @@ from flask import Blueprint, request, jsonify, make_response, current_app
 import json
 from src import db
 
-
 tanks = Blueprint('tanks', __name__)
 
-# Get all the products from the database
 @tanks.route('/tanks', methods=['GET'])
 def get_tanks():
+    """ gets all the tanks """
     # get a cursor object from the database
     cursor = db.get_db().cursor()
 
@@ -48,6 +47,7 @@ def get_tanks_detail (id):
 
 @tanks.route('/tanks/<id>', methods=['PUT'])
 def update_tank_details(): 
+    """ updates a tank's details"""
     data = request.json
 
     vals = [val for key, val in data.items() if key != 'TankID']
@@ -63,7 +63,7 @@ def update_tank_details():
 
 @tanks.route('/tanks', methods = ['DELETE'])
 def delete_tank():
-    """ delete tank """
+    """ delete a tank """
     the_data = request.json
     current_app.logger.info(the_data) 
 
@@ -98,6 +98,7 @@ def get_tank_managers(id):
 
 @tanks.route('/tanks', methods=['POST'])
 def add_new_tanks():
+    """ add a new tank """
      # collecting data from the request object 
     the_data = request.json
     current_app.logger.info(the_data)

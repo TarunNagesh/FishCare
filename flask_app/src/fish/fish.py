@@ -2,17 +2,17 @@ from flask import Blueprint, request, jsonify, make_response, current_app
 import json
 from src import db
 
-
 fish = Blueprint('fish', __name__)
 
 @fish.route('/fish', methods=['GET'])
 def get_fish():
-# construct the query 
+    """ get all fish """ 
+    # construct the query 
     query = 'select * from fish' 
     current_app.logger.info(query)
 
 
-# execute the query 
+    # execute the query 
     cursor = db.get_db().cursor()
     cursor.execute(query)
     column_headers = [x[0] for x in cursor.description]
@@ -22,10 +22,9 @@ def get_fish():
         json_data.append(dict(zip(column_headers, row)))
     return jsonify(json_data)
 
-
 @fish.route('/fish/<id>', methods=['GET'])
 def get_fish(id):
-
+    """ gets a specific fish """
 # create the query
     query = 'select * from fish where fishid =' + str(id)
     current_app.logger.info(query)
@@ -40,11 +39,9 @@ def get_fish(id):
         json_data.append(dict(zip(column_headers, row)))
     return jsonify(json_data)
 
-
-
-@products.route('/fish', methods=['POST'])
+@fish.route('/fish', methods=['POST'])
 def add_new_fish():
-    
+    """ adds a new fish to the table """
     # collecting data from the request object 
     the_data = request.json
     current_app.logger.info(the_data)
@@ -78,6 +75,7 @@ def add_new_fish():
 
 @fish.route('/fish/<id>', methods =['PUT']) 
 def update_fish(id): 
+    """ updates fish details """
     # collecting data 
     the_data = request.json 
 
@@ -100,10 +98,9 @@ def update_fish(id):
 
     return 'Success!'
 
-
-# delete from a fish with a specific ID 
 @fish.route('/fish/<id>', methods =['DELETE']) 
 def delete_fish(id): 
+    """ delete from a fish with a specific ID """
     the_data = request.json 
     
     current_app.logger.info(the_data)
@@ -119,9 +116,9 @@ def delete_fish(id):
     db.get_db().commit()
     return 'Bye Fish!'
 
-# delete all fish where they are dead
 @fish.route('/fish', methods =['DELETE']) 
 def delete_allfish(): 
+    """delete all fish where they are dead"""
     the_data = request.json 
 
     current_app.logger.info(the_data) 
@@ -136,3 +133,21 @@ def delete_allfish():
     cursor.execute(query) 
     db.get_db().commit() 
     return 'all dead fish deleted!'
+
+@fish.route('/fish/<housedin>', methods=['GET'])
+def get_fish_from_tank(housedin):
+    """ selects all fish from a given tank """
+    # create the query
+    query = 'select * from fish where HousedIn =' + str(housedin)
+    current_app.logger.info(query)
+
+    # execute the id 
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    column_headers = [x[0] for x in cursor.description]
+
+    json_data = []
+    the_data = cursor.fetchall()
+    for row in the_data:
+        json_data.append(dict(zip(column_headers, row)))
+    return jsonify(json_data)

@@ -2,12 +2,11 @@ from flask import Blueprint, request, jsonify, make_response, current_app
 import json
 from src import db
 
-
 procedures = Blueprint('procedures', __name__)
 
-# Get all the procedures from the database
 @procedures.route('/procedures', methods=['GET'])
 def procedures():
+    """ Get all the procedures from the database """ 
     # get a cursor object from the database
     cursor = db.get_db().cursor()
 
@@ -32,10 +31,9 @@ def procedures():
 
     return jsonify(json_data)
 
-# Get details of a specific procedure
 @procedures.route('/procedures/<id>', methods=['GET'])
 def get_proc_detail (id):
-
+    """ Get details of a specific procedure """
     query = 'SELECT * FROM procedures WHERE procid = ' + str(id)
     current_app.logger.info(query)
 
@@ -48,10 +46,9 @@ def get_proc_detail (id):
         json_data.append(dict(zip(column_headers, row)))
     return jsonify(json_data)
 
-# Add a new procedure
 @procedures.route('/procedures', methods=['POST'])
 def add_new_procedure():
-    
+    """ Add a new procedure""" 
     # collecting data from the request object 
     the_data = request.json
     current_app.logger.info(the_data)
@@ -81,9 +78,9 @@ def add_new_procedure():
     
     return 'Success!'
 
-# Update the details of a procedure
 @procedures.route('/procedures', methods=['PUT'])
 def update_procedure():
+    """ Update the details of a procedure """
     proc_info = request.json
     # current_app.logger.info(cust_info)
     surgeon = proc_info['surgeon']
@@ -101,9 +98,9 @@ def update_procedure():
     db.get_db().commit()
     return 'Procedure updated!'
 
-# Delete a procedure
 @procedures.route('/procedures', methods = ['DELETE'])
 def delete_procedure():
+    """ Delete a procedure """
     the_data = request.json
     current_app.logger.info(the_data) 
 
@@ -118,9 +115,10 @@ def delete_procedure():
     db.get_db().commit()
     return 'Procedure deleted!'
 
-# Return all procedure types
 @procedures.route('/procedures_type', methods = ['GET'])
 def get_all_procedure_types():
+    """ Return all procedure types""" 
+
     query = '''
         SELECT DISTINCT type AS label, type as value
         FROM procedures

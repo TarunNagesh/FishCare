@@ -2,12 +2,11 @@ from flask import Blueprint, request, jsonify, make_response, current_app
 import json
 from src import db
 
-
 reports = Blueprint('reports', __name__)
 
-# Get all the products from the database
 @reports.route('/reports', methods=['GET'])
 def get_reports():
+    """ Get all the products from the database """
     # get a cursor object from the database
     cursor = db.get_db().cursor()
 
@@ -48,6 +47,7 @@ def get_reports_detail (id):
 
 @reports.route('/reports/<id>', methods=['POST'])
 def add_report(id): 
+    """ adds a report """
      # collecting data from the request object 
     the_data = request.json
     current_app.logger.info(the_data)
@@ -103,6 +103,7 @@ def get_report_author(id):
 
 @reports.route('/reports/<id>', methods=['PUT'])
 def update_report_details(id): 
+    """ updates a given report's details""" 
     data = request.json
 
     vals = [val for key, val in data.items() if key != 'ReportID']

@@ -2,19 +2,17 @@ from flask import Blueprint, request, jsonify, make_response, current_app
 import json
 from src import db
 
-
 plans = Blueprint('plans', __name__)
 
-# Get all the plans from the database
 @plans.route('/plans', methods=['GET'])
 def plans():
+    """ Get all the plans from the database """
     query = '''
         SELECT DISTINCT type AS Label
         FROM plans
         WHERE type IS NOT NULL
         ORDER BY type
     '''
-
     cursor = db.get_db().cursor()
     cursor.execute(query)
 
@@ -30,7 +28,7 @@ def plans():
 
 @plans.route('/plans/<id>', methods=['GET'])
 def get_plan_detail (id):
-
+    """ get plan's details """
     query = 'SELECT planID, madeBy, approvedBy, type, details, status, cost FROM plans WHERE planID = ' + str(id)
     current_app.logger.info(query)
 
@@ -43,10 +41,9 @@ def get_plan_detail (id):
         json_data.append(dict(zip(column_headers, row)))
     return jsonify(json_data)
     
-
 @plans.route('/plans', methods=['POST'])
 def add_new_plan():
-    
+    """ add a new plan """
     # collecting data from the request object 
     the_data = request.json
     current_app.logger.info(the_data)
@@ -78,10 +75,9 @@ def add_new_plan():
     
     return 'Success!'
 
-
 @plans.route('/plans', methods=['PUT'])
 def update_plan():
-    
+    """ update a plan given it's ID """
     # collecting data from the request object 
     the_data = request.json
     current_app.logger.info(the_data)
@@ -95,11 +91,9 @@ def update_plan():
     status = the_data['status']
     cost = the_data['cost']
 
-
     # Constructing the query
     query = 'UPDATE plans SET madeBy = %s, approvedBy = %s, type = %s, details = %s, status = %s, cost = %s, WHERE planID = %s'
     current_app.logger.info(query)
-    
     
     # executing and committing the update statement 
     cursor = db.get_db().cursor()
@@ -108,9 +102,9 @@ def update_plan():
     
     return 'Success!'
 
-# Delete a prescription given an ID
 @plans.route('/plans/<id>', methods = ['DELETE'])
 def delete_plan_id():
+    """ Delete a prescription given an ID """
     the_data = request.json
     current_app.logger.info(the_data) 
 
@@ -125,9 +119,9 @@ def delete_plan_id():
     db.get_db().commit()
     return 'Prescription deleted!'
 
-# Delete plans where status = 'Denied'
 @plans.route('/plans', methods = ['DELETE'])
 def delete_denied_plans():
+    """ Delete plans where status = 'Denied' """
     the_data = request.json
     current_app.logger.info(the_data) 
 

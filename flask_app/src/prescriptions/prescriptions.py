@@ -2,12 +2,11 @@ from flask import Blueprint, request, jsonify, make_response, current_app
 import json
 from src import db
 
-
 prescriptions = Blueprint('prescriptions', __name__)
 
-# Get all the prescriptions from the database
 @prescriptions.route('/prescriptions', methods=['GET'])
 def prescriptions():
+    """ Get all the prescriptions from the database """
     # get a cursor object from the database
     cursor = db.get_db().cursor()
 
@@ -32,10 +31,9 @@ def prescriptions():
 
     return jsonify(json_data)
 
-# Get details of a specific prescriptions
 @prescriptions.route('/prescriptions/<id>', methods=['GET'])
 def get_prescriptions_detail (id):
-
+    """ Get details of a specific prescriptions """
     query = 'SELECT * FROM prescriptions WHERE medid = ' + str(id)
     current_app.logger.info(query)
 
@@ -48,10 +46,9 @@ def get_prescriptions_detail (id):
         json_data.append(dict(zip(column_headers, row)))
     return jsonify(json_data)
 
-# Add a new prescription
 @prescriptions.route('/prescriptions', methods=['POST'])
 def add_new_prescriptions():
-    
+    """ Add a new prescription """
     # collecting data from the request object 
     the_data = request.json
     current_app.logger.info(the_data)
@@ -77,9 +74,9 @@ def add_new_prescriptions():
     
     return 'Success!'
 
-# Update the details of a prescriptions
 @prescriptions.route('/prescriptions', methods=['PUT'])
 def update_prescriptions():
+    """ Update the details of a prescriptions """
     pres_info = request.json
     # current_app.logger.info(cust_info)
     procedure_for = pres_info['procfor']
@@ -95,9 +92,9 @@ def update_prescriptions():
     db.get_db().commit()
     return 'Prescription updated!'
 
-# Delete a prescription
 @prescriptions.route('/prescriptions', methods = ['DELETE'])
 def delete_prescription():
+    """ Delete a prescription """
     the_data = request.json
     current_app.logger.info(the_data) 
 
@@ -112,9 +109,9 @@ def delete_prescription():
     db.get_db().commit()
     return 'Prescription deleted!'
 
-# Delete prescriptions where dosage = 0
 @prescriptions.route('/prescriptions_no_dosage', methods = ['DELETE'])
 def delete_empty_prescriptions():
+    """ Delete prescriptions where dosage = 0 """ 
     the_data = request.json
     current_app.logger.info(the_data) 
 
