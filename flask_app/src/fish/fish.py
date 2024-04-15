@@ -42,7 +42,7 @@ def get_fish(id):
 
 
 
-@products.route('/fish', methods=['POST'])
+@products.route('/fish/<id>', methods=['POST'])
 def add_new_fish():
     
     # collecting data from the request object 
