@@ -5,7 +5,7 @@ from src import db
 procedures = Blueprint('procedures', __name__)
 
 @procedures.route('/procedures', methods=['GET'])
-def procedures():
+def get_procedures():
     """ Get all the procedures from the database """ 
     # get a cursor object from the database
     cursor = db.get_db().cursor()

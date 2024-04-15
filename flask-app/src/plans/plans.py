@@ -5,7 +5,7 @@ from src import db
 plans = Blueprint('plans', __name__)
 
 @plans.route('/plans', methods=['GET'])
-def plans():
+def get_plans():
     """ Get all the plans from the database """
     query = '''
         SELECT DISTINCT type AS Label

@@ -2,16 +2,16 @@ from flask import Blueprint, request, jsonify, make_response, current_app
 import json
 from src import db
 
-tanks = Blueprint('tanks', __name__)
+Tanks = Blueprint('Tanks', __name__)
 
-@tanks.route('/tanks', methods=['GET'])
+@Tanks.route('/Tanks', methods=['GET'])
 def get_tanks():
     """ gets all the tanks """
     # get a cursor object from the database
     cursor = db.get_db().cursor()
 
     # use cursor to query the database for a list of products
-    cursor.execute('SELECT TankID, ManagedBy, OverseenBy, Temp, TimeCleaned, WaterType, PHlevel, Food, TimeFed, Status FROM tanks')
+    cursor.execute('SELECT TankID, ManagedBy, OverseenBy, Temp, TimeCleaned, WaterType, PHlevel, Food, TimeFed, Status FROM Tanks')
 
     # grab the column headers from the returned data
     column_headers = [x[0] for x in cursor.description]
@@ -30,10 +30,10 @@ def get_tanks():
 
     return jsonify(json_data)
 
-@tanks.route('/tanks/<id>', methods=['GET'])
+@Tanks.route('/Tanks/<id>', methods=['GET'])
 def get_tanks_detail (id):
     """ Gets tank details based on a query """
-    query = 'SELECT TankID, ManagedBy, OverseenBy, Temp, TimeCleaned, WaterType, PHlevel, Food, TimeFed, Status FROM tanks WHERE id = ' + str(id)
+    query = 'SELECT TankID, ManagedBy, OverseenBy, Temp, TimeCleaned, WaterType, PHlevel, Food, TimeFed, Status FROM Tanks WHERE id = ' + str(id)
     current_app.logger.info(query)
 
     cursor = db.get_db().cursor()

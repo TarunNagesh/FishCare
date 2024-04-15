@@ -5,7 +5,7 @@ from src import db
 prescriptions = Blueprint('prescriptions', __name__)
 
 @prescriptions.route('/prescriptions', methods=['GET'])
-def prescriptions():
+def get_prescriptions():
     """ Get all the prescriptions from the database """
     # get a cursor object from the database
     cursor = db.get_db().cursor()

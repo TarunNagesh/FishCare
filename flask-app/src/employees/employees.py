@@ -2,12 +2,11 @@ from flask import Blueprint, request, jsonify, make_response, current_app
 import json
 from src import db
 
-
 employees = Blueprint('employees', __name__)
 
-# Get all the employees from the database
 @employees.route('/employees', methods=['GET'])
-def employees():
+def get_employees():
+    """ Get all the employees from the database """
     # get a cursor object from the database
     cursor = db.get_db().cursor()
 
