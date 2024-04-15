@@ -99,7 +99,7 @@ def update_procedure():
     db.get_db().commit()
     return 'Procedure updated!'
 
-@procedures.route('/procedures', methods = ['DELETE'])
+@Procedures.route('/procedures', methods = ['DELETE'])
 def delete_procedure():
     """ Delete a procedure """
     the_data = request.json
