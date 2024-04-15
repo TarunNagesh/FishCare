@@ -6,7 +6,7 @@ from src import db
 finances = Blueprint('finances', __name__)
 
 # Get all the plans from the database
-@finances.route('/plans', methods=['GET'])
+@finances.route('/finances', methods=['GET'])
 def finances():
     # get a cursor object from the database
     cursor = db.get_db().cursor()
