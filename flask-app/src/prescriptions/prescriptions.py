@@ -4,7 +4,7 @@ from src import db
 
 prescriptions = Blueprint('prescriptions', __name__)
 
-@prescriptions.route('/prescriptions', methods=['GET'])
+@Prescriptions.route('/Prescriptions', methods=['GET'])
 def get_prescriptions():
     """ Get all the prescriptions from the database """
     # get a cursor object from the database
@@ -31,10 +31,10 @@ def get_prescriptions():
 
     return jsonify(json_data)
 
-@prescriptions.route('/prescriptions/<id>', methods=['GET'])
+@Prescriptions.route('/Prescriptions/<id>', methods=['GET'])
 def get_prescriptions_detail (id):
     """ Get details of a specific prescriptions """
-    query = 'SELECT * FROM prescriptions WHERE medid = ' + str(id)
+    query = 'SELECT * FROM Prescriptions WHERE MedID = ' + str(id)
     current_app.logger.info(query)
 
     cursor = db.get_db().cursor()
@@ -46,7 +46,7 @@ def get_prescriptions_detail (id):
         json_data.append(dict(zip(column_headers, row)))
     return jsonify(json_data)
 
-@prescriptions.route('/prescriptions', methods=['POST'])
+@Prescriptions.route('/Prescriptions', methods=['POST'])
 def add_new_prescriptions():
     """ Add a new prescription """
     # collecting data from the request object 
@@ -54,13 +54,13 @@ def add_new_prescriptions():
     current_app.logger.info(the_data)
 
     #extracting the variable
-    procedure_for = the_data['procfor']
-    id = the_data['medid']
-    med = the_data['medicine']
-    dosage = the_data['dosage']
+    procedure_for = the_data['ProcFor']
+    id = the_data['MedID']
+    med = the_data['Medicine']
+    dosage = the_data['Dosage']
 
     # Constructing the query
-    query = 'INSERT INTO prescriptions (procfor, medid, medicine, dosage) VALUES ("'
+    query = 'INSERT INTO Prescriptions (ProcFor, MedID, Medicine, Dosage) VALUES ("'
     query += procedure_for + '", "'
     query += id + '", "'
     query += med + '", "'
@@ -74,17 +74,17 @@ def add_new_prescriptions():
     
     return 'Success!'
 
-@prescriptions.route('/prescriptions', methods=['PUT'])
+@Prescriptions.route('/Prescriptions', methods=['PUT'])
 def update_prescriptions():
     """ Update the details of a prescriptions """
     pres_info = request.json
     # current_app.logger.info(cust_info)
-    procedure_for = pres_info['procfor']
-    id = pres_info['medid']
-    med = pres_info['medicine']
-    dosage = pres_info['dosage']
+    procedure_for = pres_info['ProcFor']
+    id = pres_info['MedID']
+    med = pres_info['Medicine']
+    dosage = pres_info['Dosage']
 
-    query = 'UPDATE prescriptions SET procfor = %s, medicine = %s, dosage = %s, WHERE medid = %s'
+    query = 'UPDATE Prescriptions SET ProcFor = %s, Medicine = %s, Dosage = %s, WHERE MedID = %s'
     data = (procedure_for, med, dosage, id)
 
     cursor = db.get_db().cursor()
@@ -92,15 +92,15 @@ def update_prescriptions():
     db.get_db().commit()
     return 'Prescription updated!'
 
-@prescriptions.route('/prescriptions', methods = ['DELETE'])
+@Prescriptions.route('/Prescriptions', methods = ['DELETE'])
 def delete_prescription():
     """ Delete a prescription """
     the_data = request.json
     current_app.logger.info(the_data) 
 
-    id = the_data['medid']
+    id = the_data['MedID']
 
-    query = 'DELETE FROM prescriptions WHERE medid = ' + id
+    query = 'DELETE FROM Prescriptions WHERE MedID = ' + id
     current_app.logger.info(query)
 
     # executing and committing the insert statement 
@@ -109,13 +109,13 @@ def delete_prescription():
     db.get_db().commit()
     return 'Prescription deleted!'
 
-@prescriptions.route('/prescriptions_no_dosage', methods = ['DELETE'])
+@Prescriptions.route('/Prescriptions_no_dosage', methods = ['DELETE'])
 def delete_empty_prescriptions():
     """ Delete prescriptions where dosage = 0 """ 
     the_data = request.json
     current_app.logger.info(the_data) 
 
-    query = 'DELETE FROM prescriptions WHERE dosage = 0'
+    query = 'DELETE FROM Prescriptions WHERE Dosage = 0'
     current_app.logger.info(query)
 
     # executing and committing the insert statement 
