@@ -8,6 +8,7 @@ This is a project developed by:
 - Fin Li `@li-fin`
 - Tarun Nagesh `@TarunNagesh`
 
+
 **FishCare was developed for a Database Design [CS3200] final project.**
 
 # Development:
