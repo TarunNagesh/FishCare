@@ -116,7 +116,7 @@ def delete_plan_id():
 
     id = the_data['PlanID']
 
-    query = 'DELETE FROM plans WHERE PlanID = ' + id
+    query = 'DELETE FROM plans WHERE PlanID = ' + str(id)
     current_app.logger.info(query)
 
     # executing and committing the insert statement 
