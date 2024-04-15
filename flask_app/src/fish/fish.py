@@ -24,7 +24,7 @@ def get_fish():
 
 
 @fish.route('/fish/<id>', methods=['GET'])
-def get_fish():
+def get_fish(id):
 
 # create the query
     query = 'select * from fish where fishid =' + str(id)
@@ -42,7 +42,7 @@ def get_fish():
 
 
 
-@products.route('/fish/<id>', methods=['POST'])
+@products.route('/fish', methods=['POST'])
 def add_new_fish():
     
     # collecting data from the request object 
@@ -77,7 +77,7 @@ def add_new_fish():
     return 'Success!'
 
 @fish.route('/fish/<id>', methods =['PUT']) 
-def update_fish(): 
+def update_fish(id): 
     # collecting data 
     the_data = request.json 
 
@@ -103,7 +103,7 @@ def update_fish():
 
 # delete from a fish with a specific ID 
 @fish.route('/fish/<id>', methods =['DELETE']) 
-def delete_fish(): 
+def delete_fish(id): 
     the_data = request.json 
     
     current_app.logger.info(the_data)
@@ -127,7 +127,7 @@ def delete_allfish():
     current_app.logger.info(the_data) 
     
 
-    query = 'delete from fish where status = dead'
+    query = 'delete from fish where status = "dead"'
 
     current_app.logger.info(query) 
 
@@ -136,7 +136,3 @@ def delete_allfish():
     cursor.execute(query) 
     db.get_db().commit() 
     return 'all dead fish deleted!'
-
-
-
-
