@@ -119,7 +119,7 @@ def delete_procedure():
     return 'Procedure deleted!'
 
 # Return all procedure types
-@procedures.route('/procedures', methods = ['GET'])
+@procedures.route('/procedures_type', methods = ['GET'])
 def get_all_procedure_types():
     query = '''
         SELECT DISTINCT type AS label, type as value
