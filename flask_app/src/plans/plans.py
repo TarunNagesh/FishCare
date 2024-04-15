@@ -29,7 +29,7 @@ def plans():
     return jsonify(json_data)
 
 @plans.route('/plans/<id>', methods=['GET'])
-def get_plans_detail (id):
+def get_plan_detail (id):
 
     query = 'SELECT PlanID, MadeBy, ApprovedBy, Type, Details, Status, Cost FROM plans WHERE PlanID = ' + str(id)
     current_app.logger.info(query)
@@ -45,7 +45,7 @@ def get_plans_detail (id):
     
 
 @plans.route('/plans', methods=['POST'])
-def add_new_plans():
+def add_new_plan():
     
     # collecting data from the request object 
     the_data = request.json
@@ -80,7 +80,7 @@ def add_new_plans():
 
 
 @plans.route('/plans', methods=['PUT'])
-def update_plans():
+def update_plan():
     
     # collecting data from the request object 
     the_data = request.json
@@ -110,7 +110,7 @@ def update_plans():
 
 # Delete a prescription given an ID
 @plans.route('/plans/<id>', methods = ['DELETE'])
-def delete_prescription():
+def delete_plan_id():
     the_data = request.json
     current_app.logger.info(the_data) 
 
@@ -127,7 +127,7 @@ def delete_prescription():
 
 # Delete plans where status = 'Denied'
 @plans.route('/plans', methods = ['DELETE'])
-def delete_empty_plans():
+def delete_denied_plans():
     the_data = request.json
     current_app.logger.info(the_data) 
 
