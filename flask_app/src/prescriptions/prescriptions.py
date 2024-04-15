@@ -113,7 +113,7 @@ def delete_prescription():
     return 'Prescription deleted!'
 
 # Delete prescriptions where dosage = 0
-@prescriptions.route('/prescriptions', methods = ['DELETE'])
+@prescriptions.route('/prescriptions_no_dosage', methods = ['DELETE'])
 def delete_empty_prescriptions():
     the_data = request.json
     current_app.logger.info(the_data) 
