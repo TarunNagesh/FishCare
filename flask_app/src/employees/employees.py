@@ -33,7 +33,7 @@ def employees():
     return jsonify(json_data)
 
 # Gets the manager's ID and name from a specific employee
-@employees.route('/employees/<ManagerID>', methods=['GET'])
+@employees.route('/employees/<id>', methods=['GET'])
 def get_manager (id):
 
     query = 'SELECT ManagerID, FirstName, LastName FROM Employees WHERE EmpID = ' + str(id)
@@ -120,8 +120,8 @@ def delete_employee_no_hours():
     return 'Employee fired!'
 
 # Delete employee given id
-@employees.route('/employees/<EmpID>', methods = ['DELETE'])
-def delete_employee():
+@employees.route('/employees/<id>', methods = ['DELETE'])
+def delete_employee(id):
     the_data = request.json
     current_app.logger.info(the_data) 
     id = the_data['EmpId']
