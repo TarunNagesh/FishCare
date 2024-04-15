@@ -2,16 +2,16 @@ from flask import Blueprint, request, jsonify, make_response, current_app
 import json
 from src import db
 
-plans = Blueprint('plans', __name__)
+Plans = Blueprint('Plans', __name__)
 
-@plans.route('/plans', methods=['GET'])
+@Plans.route('/Plans', methods=['GET'])
 def get_plans():
-    """ Get all the plans from the database """
+    """ Get all the Plans from the database """
     query = '''
-        SELECT DISTINCT type AS Label
-        FROM plans
-        WHERE type IS NOT NULL
-        ORDER BY type
+        SELECT DISTINCT Type AS Label
+        FROM Plans
+        WHERE Type IS NOT NULL
+        ORDER BY Type
     '''
     cursor = db.get_db().cursor()
     cursor.execute(query)
@@ -26,10 +26,10 @@ def get_plans():
     
     return jsonify(json_data)
 
-@plans.route('/plans/<id>', methods=['GET'])
+@Plans.route('/Plans/<id>', methods=['GET'])
 def get_plan_detail (id):
     """ get plan's details """
-    query = 'SELECT planID, madeBy, approvedBy, type, details, status, cost FROM plans WHERE planID = ' + str(id)
+    query = 'SELECT PlanID, MadeBy, ApprovedBy, Type, Details, Status, Cost FROM Plans WHERE PlanID = ' + str(id)
     current_app.logger.info(query)
 
     cursor = db.get_db().cursor()
@@ -41,7 +41,7 @@ def get_plan_detail (id):
         json_data.append(dict(zip(column_headers, row)))
     return jsonify(json_data)
     
-@plans.route('/plans', methods=['POST'])
+@Plans.route('/Plans', methods=['POST'])
 def add_new_plan():
     """ add a new plan """
     # collecting data from the request object 
@@ -49,16 +49,16 @@ def add_new_plan():
     current_app.logger.info(the_data)
 
     #extracting the variable
-    id = the_data['planId']
-    madeBy = the_data['madeBy']
-    approvedBy = the_data['approvedBy']
-    type = the_data['type']
-    details = the_data['details']
-    status = the_data['status']
-    cost = the_data['cost']
+    id = the_data['PlanId']
+    madeBy = the_data['MadeBy']
+    approvedBy = the_data['ApprovedBy']
+    type = the_data['Type']
+    details = the_data['Details']
+    status = the_data['Status']
+    cost = the_data['Cost']
 
     # Constructing the query
-    query = 'insert into plans (planID, madeBy, approvedBy, type, details, status, cost) values ("'
+    query = 'insert into Plans (PlanID, MadeBy, ApprovedBy, Type, Details, Status, Cost) values ("'
     query += id + '", "'
     query += madeBy + '", "'
     query += approvedBy + '", "'
@@ -75,7 +75,7 @@ def add_new_plan():
     
     return 'Success!'
 
-@plans.route('/plans', methods=['PUT'])
+@Plans.route('/Plans/<id>', methods=['PUT'])
 def update_plan():
     """ update a plan given it's ID """
     # collecting data from the request object 
@@ -83,16 +83,16 @@ def update_plan():
     current_app.logger.info(the_data)
 
     #extracting the variable
-    id = the_data['planId']
-    madeBy = the_data['madeBy']
-    approvedBy = the_data['approvedBy']
-    type = the_data['type']
-    details = the_data['details']
-    status = the_data['status']
-    cost = the_data['cost']
+    id = the_data['PlanId']
+    madeBy = the_data['MadeBy']
+    approvedBy = the_data['ApprovedBy']
+    type = the_data['Type']
+    details = the_data['Details']
+    status = the_data['Status']
+    cost = the_data['Cost']
 
     # Constructing the query
-    query = 'UPDATE plans SET madeBy = %s, approvedBy = %s, type = %s, details = %s, status = %s, cost = %s, WHERE planID = %s'
+    query = 'UPDATE Plans SET MadeBy = %s, ApprovedBy = %s, Type = %s, Details = %s, Status = %s, Cost = %s, WHERE PlanID = %s'
     current_app.logger.info(query)
     
     # executing and committing the update statement 
@@ -102,34 +102,34 @@ def update_plan():
     
     return 'Success!'
 
-@plans.route('/plans/<id>', methods = ['DELETE'])
+@Plans.route('/Plans/<id>', methods = ['DELETE'])
 def delete_plan_id():
     """ Delete a prescription given an ID """
     the_data = request.json
     current_app.logger.info(the_data) 
 
-    id = the_data['planID']
+    id = the_data['PlanID']
 
-    query = 'DELETE FROM plans WHERE planID = ' + str(id)
+    query = 'DELETE FROM Plans WHERE PlanID = ' + str(id)
     current_app.logger.info(query)
 
     # executing and committing the insert statement 
     cursor = db.get_db().cursor()
     cursor.execute(query)
     db.get_db().commit()
-    return 'Prescription deleted!'
+    return 'Plan deleted!'
 
-@plans.route('/plans', methods = ['DELETE'])
-def delete_denied_plans():
-    """ Delete plans where status = 'Denied' """
+@Plans.route('/Plans', methods = ['DELETE'])
+def delete_denied_Plans():
+    """ Delete Plans where status = 'Denied' """
     the_data = request.json
     current_app.logger.info(the_data) 
 
-    query = 'DELETE FROM plans WHERE status = "Denied"'
+    query = 'DELETE FROM Plans WHERE Status = "Denied"'
     current_app.logger.info(query)
 
     # executing and committing the insert statement 
     cursor = db.get_db().cursor()
     cursor.execute(query)
     db.get_db().commit()
-    return 'Prescription deleted!'
+    return 'Plans deleted!'
