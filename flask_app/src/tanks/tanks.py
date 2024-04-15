@@ -78,15 +78,16 @@ def delete_tank():
     db.get_db().commit()
     return 'Tank deleted!'
 
-@tanks.route('/tanks/<managers>', methods=['GET'])
+@tanks.route('/tanks_managers/<id>', methods=['GET'])
 def get_tank_managers(id): 
     """ gets all the managers in the tanks""" 
-    query = 'SELECT ManagedBy FROM tanks WHERE procid = ' + str(id)
+    query = 'SELECT ManagedBy FROM tanks WHERE tankid = ' + str(id)
     current_app.logger.info(query)
 
     cursor = db.get_db().cursor()
     cursor.execute(query)
     column_headers = [x[0] for x in cursor.description]
+
     json_data = []
     the_data = cursor.fetchall()
     for row in the_data:
@@ -94,7 +95,7 @@ def get_tank_managers(id):
 
     return jsonify(json_data)
 
-# Add a new procedure
+
 @tanks.route('/tanks', methods=['POST'])
 def add_new_tanks():
      # collecting data from the request object 

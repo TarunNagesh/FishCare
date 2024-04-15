@@ -65,3 +65,53 @@ def add_report():
     db.get_db().commit()
     
     return 'Success!'
+
+# Delete a procedure
+@reports.route('/reports', methods = ['DELETE'])
+def delete_report():
+    """ deletes a report """
+    the_data = request.json
+    current_app.logger.info(the_data) 
+
+    id = the_data['ReportID']
+
+    query = 'DELETE FROM reports WHERE id = ' + id
+    current_app.logger.info(query)
+
+    # executing and committing the insert statement 
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    db.get_db().commit()
+    return 'Report deleted!'
+
+@reports.route('/reports_/<id>', methods=['GET'])
+def get_report_author(id): 
+    """ gets all the managers in the tanks""" 
+    query = 'SELECT MadeBy FROM reports WHERE reportid = ' + str(id)
+    current_app.logger.info(query)
+
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    column_headers = [x[0] for x in cursor.description]
+    
+    json_data = []
+    the_data = cursor.fetchall()
+    for row in the_data:
+        json_data.append(dict(zip(column_headers, row)))
+
+    return jsonify(json_data)
+
+@reports.route('/reports/<id>', methods=['PUT'])
+def update_report_details(): 
+    data = request.json
+
+    vals = [val for key, val in data.items() if key != 'ReportID']
+
+    query = "UPDATE reports SET ReportID=%s, FishID=%s, MadeBy=%s, SentTo=%s, Type=%s, Description=%s WHERE ReportID = %s"
+
+    cursor = db.get_db().cursor()
+    data = tuple(vals)
+    r = cursor.execute(query, data)
+    db.get_db().commit()
+
+    return 'Updated successfully!'
