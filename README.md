@@ -7,6 +7,7 @@ This is a project developed by:
 - Sophia Boyajian `@fifilala097`
 - Fin Li `@li-fin`
 - Tarun Nagesh `@TarunNagesh`
+- Emma Penn '@EmmaPenn'
 
 **FishCare was developed for a Database Design [CS3200] final project.**
 
