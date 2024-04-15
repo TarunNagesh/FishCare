@@ -8,10 +8,7 @@ Plans = Blueprint('Plans', __name__)
 def get_plans():
     """ Get all the Plans from the database """
     query = '''
-        SELECT DISTINCT Type AS Label
-        FROM Plans
-        WHERE Type IS NOT NULL
-        ORDER BY Type
+        SELECT * FROM Plans
     '''
     cursor = db.get_db().cursor()
     cursor.execute(query)
