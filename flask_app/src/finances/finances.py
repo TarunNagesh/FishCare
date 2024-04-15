@@ -62,3 +62,69 @@ def add_new_plans():
     db.get_db().commit()
     
     return 'Success!'
+
+    # get all finances given a date 
+@finances.route('/finances_date', methods=['GET'])
+def get_finances_author(date): # idk if this works 
+    """ gets all finances on sent on a given date """ 
+    query = 'SELECT * FROM finances WHERE DateSent = ' + str(date)
+    current_app.logger.info(query)
+
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    column_headers = [x[0] for x in cursor.description]
+    
+    json_data = []
+    the_data = cursor.fetchall()
+    for row in the_data:
+        json_data.append(dict(zip(column_headers, row)))
+
+    return jsonify(json_data)
+
+@finances.route('/finances', methods=['GET'])
+def update_transaction(): # idk if this works
+    """ updates the details of a transaction """ 
+    data = request.json
+
+    vals = [val for key, val in data.items() if key != 'TransactionID']
+
+    query = "UPDATE finances SET TransactionID=%s, ManagedBy=%s, Recievables=%s, Payables=%s, DateSent=%s WHERE TransactionID = %s"
+
+    cursor = db.get_db().cursor()
+    data = tuple(vals)
+    r = cursor.execute(query, data)
+    db.get_db().commit()
+
+    return 'Updated successfully!'
+
+@finances.route('/finances', methods = ['DELETE'])
+def delete_finances():
+    """ deletes a transaction """
+    the_data = request.json
+    current_app.logger.info(the_data) 
+
+    id = the_data['TransactionID']
+
+    query = 'DELETE FROM finances WHERE id = ' + id
+    current_app.logger.info(query)
+
+    # executing and committing the insert statement 
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    db.get_db().commit()
+    return 'Transaction deleted!'    
+
+@finances.route('/finances/<id>', methods=['GET'])
+def get_finances_detail (id):
+    """ Gets finances based on an ID """
+    query = 'SELECT TransactionID, ManagedBy, Recievables, Payables, DateSent FROM finances WHERE id = ' + str(id)
+    current_app.logger.info(query)
+
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    column_headers = [x[0] for x in cursor.description]
+    json_data = []
+    the_data = cursor.fetchall()
+    for row in the_data:
+        json_data.append(dict(zip(column_headers, row)))
+    return jsonify(json_data)
