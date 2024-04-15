@@ -47,7 +47,7 @@ def get_reports_detail (id):
     return jsonify(json_data)
 
 @reports.route('/reports/<id>', methods=['POST'])
-def add_report(): 
+def add_report(id): 
      # collecting data from the request object 
     the_data = request.json
     current_app.logger.info(the_data)
@@ -84,7 +84,7 @@ def delete_report():
     db.get_db().commit()
     return 'Report deleted!'
 
-@reports.route('/reports_/<id>', methods=['GET'])
+@reports.route('/reports_managers/<id>', methods=['GET'])
 def get_report_author(id): 
     """ gets all the managers in the tanks""" 
     query = 'SELECT MadeBy FROM reports WHERE reportid = ' + str(id)
@@ -102,7 +102,7 @@ def get_report_author(id):
     return jsonify(json_data)
 
 @reports.route('/reports/<id>', methods=['PUT'])
-def update_report_details(): 
+def update_report_details(id): 
     data = request.json
 
     vals = [val for key, val in data.items() if key != 'ReportID']
