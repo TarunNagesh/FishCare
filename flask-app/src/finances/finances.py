@@ -3,10 +3,10 @@ import json
 from src import db
 
 
-finances = Blueprint('finances', __name__)
+Finances = Blueprint('Finances', __name__)
 
 # Get all the plans from the database
-@finances.route('/finances', methods=['GET'])
+@Finances.route('/Finances', methods=['GET'])
 def get_finances():
     """ gets finances """ 
     # get a cursor object from the database
@@ -33,7 +33,7 @@ def get_finances():
 
     return jsonify(json_data)
 
-@finances.route('/finances', methods=['POST'])
+@Finances.route('/Finances', methods=['POST'])
 def add_new_plans():
     """ adds a new plan """ 
     # collecting data from the request object 
@@ -48,7 +48,7 @@ def add_new_plans():
     sent = the_data['DateSent']
 
     # Constructing the query
-    query = 'insert into finances (TransactionID, ManagedBy, Recievables, Payables, DateSent) values ("'
+    query = 'insert into Finances (TransactionID, ManagedBy, Recievables, Payables, DateSent) values ("'
     query += id + '", "'
     query += manager + '", "'
     query += rec + '", "'
@@ -63,10 +63,10 @@ def add_new_plans():
     
     return 'Success!'
 
-@finances.route('/finances/<date>', methods=['GET'])
+@Finances.route('/Finances/<date>', methods=['GET'])
 def get_transaction_author(date): # idk if this works 
     """ gets all finances on sent on a given date """ 
-    query = 'SELECT * FROM finances WHERE DateSent = ' + str(date)
+    query = 'SELECT * FROM Finances WHERE DateSent = ' + str(date)
     current_app.logger.info(query)
 
     cursor = db.get_db().cursor()
@@ -80,14 +80,14 @@ def get_transaction_author(date): # idk if this works
 
     return jsonify(json_data)
 
-@finances.route('/finances', methods=['GET'])
+@Finances.route('/Finances', methods=['GET'])
 def update_transaction(): # idk if this works
     """ updates the details of a transaction """ 
     data = request.json
 
     vals = [val for key, val in data.items() if key != 'TransactionID']
 
-    query = "UPDATE finances SET TransactionID=%s, ManagedBy=%s, Recievables=%s, Payables=%s, DateSent=%s WHERE TransactionID = %s"
+    query = "UPDATE Finances SET TransactionID=%s, ManagedBy=%s, Recievables=%s, Payables=%s, DateSent=%s WHERE TransactionID = %s"
 
     cursor = db.get_db().cursor()
     data = tuple(vals)
@@ -96,7 +96,7 @@ def update_transaction(): # idk if this works
 
     return 'Updated successfully!'
 
-@finances.route('/finances', methods = ['DELETE'])
+@Finances.route('/Finances', methods = ['DELETE'])
 def delete_finances():
     """ deletes a transaction """
     the_data = request.json
@@ -104,7 +104,7 @@ def delete_finances():
 
     id = the_data['TransactionID']
 
-    query = 'DELETE FROM finances WHERE id = ' + id
+    query = 'DELETE FROM Finances WHERE TransactionID = ' + id
     current_app.logger.info(query)
 
     # executing and committing the insert statement 
@@ -113,10 +113,10 @@ def delete_finances():
     db.get_db().commit()
     return 'Transaction deleted!'    
 
-@finances.route('/finances/<id>', methods=['GET'])
+@Finances.route('/Finances/<id>', methods=['GET'])
 def get_finances_detail (id):
     """ Gets finances based on an ID """
-    query = 'SELECT TransactionID, ManagedBy, Recievables, Payables, DateSent FROM finances WHERE id = ' + str(id)
+    query = 'SELECT TransactionID, ManagedBy, Recievables, Payables, DateSent FROM Finances WHERE TransactionID = ' + str(id)
     current_app.logger.info(query)
 
     cursor = db.get_db().cursor()

@@ -2,11 +2,12 @@ from flask import Blueprint, request, jsonify, make_response, current_app
 import json
 from src import db
 
-employees = Blueprint('employees', __name__)
 
-@employees.route('/employees', methods=['GET'])
-def get_employees():
-    """ Get all the employees from the database """
+Employees = Blueprint('Employees', __name__)
+
+# Get all the employees from the database
+@Employees.route('/Employees', methods=['GET'])
+def Employees():
     # get a cursor object from the database
     cursor = db.get_db().cursor()
 
@@ -32,7 +33,7 @@ def get_employees():
     return jsonify(json_data)
 
 # Gets the manager's ID and name from a specific employee
-@employees.route('/employees/<id>', methods=['GET'])
+@Employees.route('/Employees/<id>', methods=['GET'])
 def get_manager (id):
 
     query = 'SELECT ManagerID, FirstName, LastName FROM Employees WHERE EmpID = ' + str(id)
@@ -48,7 +49,7 @@ def get_manager (id):
     return jsonify(json_data)
 
 # Add a new employee
-@employees.route('/employees', methods=['POST'])
+@Employees.route('/Employees', methods=['POST'])
 def add_new_employee():
     
     # collecting data from the request object 
@@ -65,7 +66,7 @@ def add_new_employee():
     address = the_data['address']
 
     # Constructing the query
-    query = 'INSERT INTO prescriptions (empid, managerid, firstname, middleinitial, lastname, hours, address) VALUES ("'
+    query = 'INSERT INTO prescriptions (EmpID, ManagerID, FirstName, MiddleInitial, LastName, Hours, Address) VALUES ("'
     query += employee_id + '", "'
     query += manager_id + '", "'
     query += first + '", "'
@@ -83,19 +84,19 @@ def add_new_employee():
     return 'Success!'
 
 # Update the details of an employee
-@employees.route('/employees', methods=['PUT'])
+@Employees.route('/Employees', methods=['PUT'])
 def update_employee():
     the_data = request.json
     # current_app.logger.info(cust_info)
-    employee_id = the_data['empid']
-    manager_id = the_data['managerid']
-    first = the_data['firstname']
-    mi = the_data['middleinitial']
-    last = the_data['lastname']
-    hours = the_data['hours']
-    address = the_data['address']
+    employee_id = the_data['EmpID']
+    manager_id = the_data['ManagerID']
+    first = the_data['FirstName']
+    mi = the_data['MiddleInitial']
+    last = the_data['LastName']
+    hours = the_data['Hours']
+    address = the_data['Address']
 
-    query = 'UPDATE prescriptions SET managerid = %s, firstname = %s, middleinitial = %s, lastname = %s, hours = %s, address = %s WHERE empid = %s'
+    query = 'UPDATE Prescriptions SET ManagerID = %s, FirstName = %s, MiddleInitial = %s, LastName = %s, Hours = %s, Address = %s WHERE EmpID = %s'
     data = (manager_id, first, mi, last, hours, address, employee_id)
 
     cursor = db.get_db().cursor()
@@ -104,12 +105,12 @@ def update_employee():
     return 'Employee updated!'
 
 # Delete employees where hours = 0
-@employees.route('/employees', methods = ['DELETE'])
+@Employees.route('/Employees', methods = ['DELETE'])
 def delete_employee_no_hours():
     the_data = request.json
     current_app.logger.info(the_data) 
 
-    query = 'DELETE FROM employees WHERE hours == 0'
+    query = 'DELETE FROM Employees WHERE Hours == 0'
     current_app.logger.info(query)
 
     # executing and committing the insert statement 
@@ -119,13 +120,13 @@ def delete_employee_no_hours():
     return 'Employee fired!'
 
 # Delete employee given id
-@employees.route('/employees/<id>', methods = ['DELETE'])
+@Employees.route('/Employees/<id>', methods = ['DELETE'])
 def delete_employee(id):
     the_data = request.json
     current_app.logger.info(the_data) 
     id = the_data['EmpId']
 
-    query = 'DELETE FROM employees WHERE EmpId == ' + str(id)
+    query = 'DELETE FROM Employees WHERE EmpID == ' + str(id)
     current_app.logger.info(query)
 
     # executing and committing the insert statement 
