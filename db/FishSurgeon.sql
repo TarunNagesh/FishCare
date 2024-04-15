@@ -402,11 +402,11 @@ insert into Plans (PlanID, MadeBy, ApprovedBy, Type, Details, Status, Cost) valu
 insert into Plans (PlanID, MadeBy, ApprovedBy, Type, Details, Status, Cost) values (35, 0057, 0034, 'sales_report', 'auctor sit amet aliquam vel', 'denied', 1534);
 
 INSERT INTO Tanks
-    VALUES (1000, 0002, 0057, 0048, 79, CURRENT_TIMESTAMP, 'Fresh Water',
+    VALUES (1000, 0002, 0057, 0048, 79, CURRENT_TIMESTAMP, 'Freshwater',
             7.3, 'PetCo', CURRENT_TIMESTAMP, 'Active'),
-        (2000, 0002, 0057, 0048, 75, CURRENT_TIMESTAMP, 'Salt Water',
+        (2000, 0002, 0057, 0048, 75, CURRENT_TIMESTAMP, 'Saltwater',
          7.1, 'PetSmart', CURRENT_TIMESTAMP, 'Active'),
-        (3000, 0002, 0057, 0048, 78, CURRENT_TIMESTAMP, 'Fresh Water',
+        (3000, 0002, 0057, 0048, 78, CURRENT_TIMESTAMP, 'Freshwater',
          6.9, 'NontenotHungry', CURRENT_TIMESTAMP, 'Inactive');
 insert into Tanks (TankID, ManagedBy, OverseenBy, AssignedTo, Temp, TimeCleaned, WaterType, PHlevel, Food, TimeFed, Status) values (1, 0045, 0057, 0048, 68, '2008-11-11 13:23:44', 'Freshwater', 6.5, 'freeze-dried', '2023-09-29 19:05:47', 'Inactive');
 insert into Tanks (TankID, ManagedBy, OverseenBy, AssignedTo, Temp, TimeCleaned, WaterType, PHlevel, Food, TimeFed, Status) values (2, 0001, 0066, 0050, 65, '2008-11-11 13:23:44', 'Freshwater', 7.4, 'flakes', '2023-01-13 19:05:47', 'Active');
