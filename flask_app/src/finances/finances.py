@@ -64,7 +64,7 @@ def add_new_plans():
     return 'Success!'
 
     # get all finances given a date 
-@finances.route('/finances_date', methods=['GET'])
+@finances.route('/finances/<date>', methods=['GET'])
 def get_finances_author(date): # idk if this works 
     """ gets all finances on sent on a given date """ 
     query = 'SELECT * FROM finances WHERE DateSent = ' + str(date)
