@@ -60,3 +60,58 @@ def update_tank_details():
     db.get_db().commit()
 
     return 'Updated successfully!'
+
+@tanks.route('/tanks', methods = ['DELETE'])
+def delete_tank():
+    """ delete tank """
+    the_data = request.json
+    current_app.logger.info(the_data) 
+
+    id = the_data['tankid']
+
+    query = 'DELETE FROM tanks WHERE id = ' + id
+    current_app.logger.info(query)
+
+    # executing and committing the insert statement 
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    db.get_db().commit()
+    return 'Tank deleted!'
+
+@tanks.route('/tanks/<managers>', methods=['GET'])
+def get_tank_managers(id): 
+    """ gets all the managers in the tanks""" 
+    query = 'SELECT ManagedBy FROM tanks WHERE procid = ' + str(id)
+    current_app.logger.info(query)
+
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    column_headers = [x[0] for x in cursor.description]
+    json_data = []
+    the_data = cursor.fetchall()
+    for row in the_data:
+        json_data.append(dict(zip(column_headers, row)))
+
+    return jsonify(json_data)
+
+# Add a new procedure
+@tanks.route('/tanks', methods=['POST'])
+def add_new_tanks():
+     # collecting data from the request object 
+    the_data = request.json
+    current_app.logger.info(the_data)
+
+    #extracting the variable
+    vals = [f'"{val}"' for key, val in the_data.items() if key != 'TankID']
+
+    keys = [key for key in the_data if key != 'TankID']
+
+    # constructing the query
+    query = f'INSERT INTO tanks ({", ".join(keys)}) VALUES ({", ".join(keys)})'
+
+    # executing and committing the insert statement 
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    db.get_db().commit()
+    
+    return 'Success!'
