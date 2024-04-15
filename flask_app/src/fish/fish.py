@@ -39,7 +39,13 @@ def get_fish(id):
         json_data.append(dict(zip(column_headers, row)))
     return jsonify(json_data)
 
+<<<<<<< HEAD
 @fish.route('/fish', methods=['POST'])
+=======
+
+
+@products.route('/fish/<id>', methods=['POST'])
+>>>>>>> bca90c0462f6b5dfd864bec1f48b7bd4f70314b3
 def add_new_fish():
     """ adds a new fish to the table """
     # collecting data from the request object 
