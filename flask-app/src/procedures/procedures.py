@@ -2,9 +2,9 @@ from flask import Blueprint, request, jsonify, make_response, current_app
 import json
 from src import db
 
-procedures = Blueprint('procedures', __name__)
+Procedures = Blueprint('Procedures', __name__)
 
-@procedures.route('/procedures', methods=['GET'])
+@Procedures.route('/Procedures', methods=['GET'])
 def get_procedures():
     """ Get all the procedures from the database """ 
     # get a cursor object from the database
@@ -31,10 +31,10 @@ def get_procedures():
 
     return jsonify(json_data)
 
-@procedures.route('/procedures/<id>', methods=['GET'])
+@Procedures.route('/Procedures/<id>', methods=['GET'])
 def get_proc_detail (id):
     """ Get details of a specific procedure """
-    query = 'SELECT * FROM procedures WHERE procid = ' + str(id)
+    query = 'SELECT * FROM procedures WHERE ProcID = ' + str(id)
     current_app.logger.info(query)
 
     cursor = db.get_db().cursor()
@@ -46,7 +46,7 @@ def get_proc_detail (id):
         json_data.append(dict(zip(column_headers, row)))
     return jsonify(json_data)
 
-@procedures.route('/procedures', methods=['POST'])
+@Procedures.route('/Procedures', methods=['POST'])
 def add_new_procedure():
     """ Add a new procedure""" 
     # collecting data from the request object 
@@ -54,15 +54,15 @@ def add_new_procedure():
     current_app.logger.info(the_data)
 
     #extracting the variable
-    surgeon = the_data['surgeon']
-    procid = the_data['procid']
-    fishid = the_data['fish']
-    description = the_data['description']
-    proctype = the_data['type']
-    result = the_data['result']
+    surgeon = the_data['Surgeon']
+    procid = the_data['Procid']
+    fishid = the_data['Fish']
+    description = the_data['Description']
+    proctype = the_data['Type']
+    result = the_data['Result']
 
     # Constructing the query
-    query = 'INSERT INTO procedures (surgeon, procid, fish, description, type, result) VALUES ("'
+    query = 'INSERT INTO Procedures (Surgeon, Procid, Fish, Description, Type, Result) VALUES ("'
     query += surgeon + '", "'
     query += procid + '", "'
     query += fishid + '", "'
@@ -78,19 +78,20 @@ def add_new_procedure():
     
     return 'Success!'
 
-@procedures.route('/procedures', methods=['PUT'])
+@Procedures.route('/Procedures', methods=['PUT'])
 def update_procedure():
     """ Update the details of a procedure """
     proc_info = request.json
     # current_app.logger.info(cust_info)
-    surgeon = proc_info['surgeon']
-    procid = proc_info['procid']
-    fishid = proc_info['fish']
-    description = proc_info['description']
-    proctype = proc_info['type']
-    result = proc_info['result']
+    surgeon = proc_info['Surgeon']
+    procid = proc_info['Procid']
+    fishid = proc_info['Fish']
+    description = proc_info['Description']
+    proctype = proc_info['Type']
+    result = proc_info['Result']
 
-    query = 'UPDATE procedures SET surgeon = %s, fish = %s, description = %s, type = %s, result = %s WHERE id = %s'
+
+    query = 'UPDATE Procedures SET Surgeon = %s, Fish = %s, Description = %s, Type = %s, Result = %s WHERE ProcID = %s'
     data = (surgeon, fishid, description, proctype, result, procid)
 
     cursor = db.get_db().cursor()
@@ -104,9 +105,9 @@ def delete_procedure():
     the_data = request.json
     current_app.logger.info(the_data) 
 
-    id = the_data['procid']
+    id = the_data['ProcID']
 
-    query = 'DELETE FROM procedures WHERE id = ' + id
+    query = 'DELETE FROM Procedures WHERE ProcID = ' + id
     current_app.logger.info(query)
 
     # executing and committing the insert statement 
@@ -115,15 +116,15 @@ def delete_procedure():
     db.get_db().commit()
     return 'Procedure deleted!'
 
-@procedures.route('/procedures_type', methods = ['GET'])
+@Procedures.route('/Procedures/<type>', methods = ['GET'])
 def get_all_procedure_types():
     """ Return all procedure types""" 
 
     query = '''
-        SELECT DISTINCT type AS label, type as value
-        FROM procedures
-        WHERE type IS NOT NULL
-        ORDER BY type
+        SELECT DISTINCT Type AS Label
+        FROM Procedures
+        WHERE Type IS NOT NULL
+        ORDER BY Type
     '''
 
     cursor = db.get_db().cursor()
