@@ -2,7 +2,7 @@ from flask import Blueprint, request, jsonify, make_response, current_app
 import json
 from src import db
 
-prescriptions = Blueprint('prescriptions', __name__)
+Prescriptions = Blueprint('Prescriptions', __name__)
 
 @Prescriptions.route('/Prescriptions', methods=['GET'])
 def get_prescriptions():
@@ -12,7 +12,7 @@ def get_prescriptions():
 
     # use cursor to query the database for a list of prescriptions
     # cursor.execute('SELECT id, product_code, product_name, list_price FROM products')
-    cursor.execute('')
+    cursor.execute('SELECT * FROM Prescriptions')
 
     # grab the column headers from the returned data
     column_headers = [x[0] for x in cursor.description]

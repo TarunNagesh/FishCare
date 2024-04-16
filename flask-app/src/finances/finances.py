@@ -2,7 +2,6 @@ from flask import Blueprint, request, jsonify, make_response, current_app
 import json
 from src import db
 
-
 Finances = Blueprint('Finances', __name__)
 
 # Get all the plans from the database
@@ -14,7 +13,7 @@ def get_finances():
 
     # use cursor to query the database for a list of plans
     # cursor.execute('SELECT id, plans_code, plans_name, list_price FROM plans')
-    cursor.execute('')
+    cursor.execute('SELECT * FROM Finances')
 
     # grab the column headers from the returned data
     column_headers = [x[0] for x in cursor.description]
@@ -48,7 +47,7 @@ def add_new_plans():
     sent = the_data['DateSent']
 
     # Constructing the query
-    query = 'insert into Finances (TransactionID, ManagedBy, Recievables, Payables, DateSent) values ("'
+    query = 'INSERT INTO Finances (TransactionID, ManagedBy, Recievables, Payables, DateSent) values ("'
     query += id + '", "'
     query += manager + '", "'
     query += rec + '", "'

@@ -12,7 +12,7 @@ def get_procedures():
 
     # use cursor to query the database for a list of procedures
     # cursor.execute('SELECT id, product_code, product_name, list_price FROM products')
-    cursor.execute('')
+    cursor.execute('SELECT * FROM Procedures')
 
     # grab the column headers from the returned data
     column_headers = [x[0] for x in cursor.description]

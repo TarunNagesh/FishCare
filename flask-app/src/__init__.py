@@ -33,25 +33,25 @@ def create_app():
         return "<h1>Welcome to FishCare</h1>"
 
     # Import the various Beluprint Objects
-    from src.employees.employees import employees
-    from src.finances.finances  import finances
-    from src.fish.fish import fish
-    from src.plans.plans  import plans
-    from src.prescriptions.prescriptions import prescriptions
-    from src.procedures.procedures  import procedures
-    from src.reports.reports import reports
-    from src.tanks.tanks  import Tanks
+    from src.employees.employees import Employees
+    from src.finances.finances  import Finances
+    from src.fish.fish import Fish
+    from src.plans.plans  import Plans
+    from src.prescriptions.prescriptions import Prescriptions
+    from src.procedures.procedures  import Procedures
+    from src.reports.reports import Reports
+    from src.tanks.Tanks  import Tanks
 
 
     # Register the routes from each Blueprint with the app object
     # and give a url prefix to each
-    app.register_blueprint(employees,   url_prefix='/e')
-    app.register_blueprint(finances,    url_prefix='/fin')
-    app.register_blueprint(fish,   url_prefix='/f')
-    app.register_blueprint(plans,    url_prefix='/pl')
-    app.register_blueprint(prescriptions,   url_prefix='/pe')
-    app.register_blueprint(procedures,    url_prefix='/pr')
-    app.register_blueprint(reports,   url_prefix='/r')
+    app.register_blueprint(Employees,   url_prefix='/e')
+    app.register_blueprint(Finances,    url_prefix='/fin')
+    app.register_blueprint(Fish,   url_prefix='/f')
+    app.register_blueprint(Plans,    url_prefix='/pl')
+    app.register_blueprint(Prescriptions,   url_prefix='/pe')
+    app.register_blueprint(Procedures,    url_prefix='/pr')
+    app.register_blueprint(Reports,   url_prefix='/r')
     app.register_blueprint(Tanks,    url_prefix='/ta')
 
     # Don't forget to return the app object

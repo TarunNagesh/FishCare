@@ -45,14 +45,14 @@ def get_tanks_detail (id):
         json_data.append(dict(zip(column_headers, row)))
     return jsonify(json_data)
 
-@tanks.route('/tanks/<id>', methods=['PUT'])
+@Tanks.route('/Tanks/<id>', methods=['PUT'])
 def update_tank_details(): 
     """ updates a tank's details"""
     data = request.json
 
     vals = [val for key, val in data.items() if key != 'TankID']
 
-    query = "UPDATE tanks SET ManagedBy=%s, OverseenBy=%s, Temp=%s, TimeCleaned=%s, WaterType=%s, PHlevel=%s, Food=%s, TimeFed=%s, Status=%s WHERE TankID = %s"
+    query = "UPDATE Tanks SET ManagedBy=%s, OverseenBy=%s, Temp=%s, TimeCleaned=%s, WaterType=%s, PHlevel=%s, Food=%s, TimeFed=%s, Status=%s WHERE TankID = %s"
 
     cursor = db.get_db().cursor()
     data = tuple(vals)
@@ -61,15 +61,15 @@ def update_tank_details():
 
     return 'Updated successfully!'
 
-@tanks.route('/tanks', methods = ['DELETE'])
+@Tanks.route('/Tanks', methods = ['DELETE'])
 def delete_tank():
     """ delete a tank """
     the_data = request.json
     current_app.logger.info(the_data) 
 
-    id = the_data['tankid']
+    id = the_data['TankID']
 
-    query = 'DELETE FROM tanks WHERE id = ' + id
+    query = 'DELETE FROM Tanks WHERE id = ' + id
     current_app.logger.info(query)
 
     # executing and committing the insert statement 
@@ -78,7 +78,7 @@ def delete_tank():
     db.get_db().commit()
     return 'Tank deleted!'
 
-@tanks.route('/tanks_managers/<id>', methods=['GET'])
+@Tanks.route('/Tanks_managers/<id>', methods=['GET'])
 def get_tank_managers(id): 
     """ gets all the managers in the tanks""" 
     query = 'SELECT ManagedBy FROM tanks WHERE tankid = ' + str(id)
@@ -96,7 +96,7 @@ def get_tank_managers(id):
     return jsonify(json_data)
 
 
-@tanks.route('/tanks', methods=['POST'])
+@Tanks.route('/Tanks', methods=['POST'])
 def add_new_tanks():
     """ add a new tank """
      # collecting data from the request object 
@@ -109,7 +109,7 @@ def add_new_tanks():
     keys = [key for key in the_data if key != 'TankID']
 
     # constructing the query
-    query = f'INSERT INTO tanks ({", ".join(keys)}) VALUES ({", ".join(keys)})'
+    query = f'INSERT INTO Tanks ({", ".join(keys)}) VALUES ({", ".join(keys)})'
 
     # executing and committing the insert statement 
     cursor = db.get_db().cursor()

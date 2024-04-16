@@ -2,13 +2,13 @@ from flask import Blueprint, request, jsonify, make_response, current_app
 import json
 from src import db
 
-fish = Blueprint('fish', __name__)
+Fish = Blueprint('Fish', __name__)
 
-@fish.route('/fish', methods=['GET'])
+@Fish.route('/Fish', methods=['GET'])
 def get_fish():
     """ get all fish """ 
     # construct the query 
-    query = 'select * from fish' 
+    query = 'SELECT * from Fish' 
     current_app.logger.info(query)
 
 
@@ -22,11 +22,11 @@ def get_fish():
         json_data.append(dict(zip(column_headers, row)))
     return jsonify(json_data)
 
-@fish.route('/fish/<id>', methods=['GET'])
+@Fish.route('/Fish/<id>', methods=['GET'])
 def get_fish_detail(id):
     """ gets a specific fish """
 # create the query
-    query = 'select * from fish where fishid =' + str(id)
+    query = 'select * from Fish where fishid =' + str(id)
     current_app.logger.info(query)
 
 # execute the id 
@@ -39,7 +39,7 @@ def get_fish_detail(id):
         json_data.append(dict(zip(column_headers, row)))
     return jsonify(json_data)
 
-@fish.route('/fish', methods=['POST'])
+@Fish.route('/Fish', methods=['POST'])
 def add_new_fish():
     """ adds a new fish to the table """
     # collecting data from the request object 
@@ -47,7 +47,7 @@ def add_new_fish():
     current_app.logger.info(the_data)
 
     #extracting the variable
-    fishID = the_data['fishid']
+    fishID = the_data['FishID']
     housed= the_data['housedin']
     kept = the_data['keptby']
     notes = the_data['notes'] 
@@ -56,7 +56,7 @@ def add_new_fish():
     status = the_data['status']
 
     # Constructing the query
-    query = 'insert into fish values ("'
+    query = 'insert into Fish values ("'
     query += fishID + '", "'
     query += housed + '", "'
     query += kept + '", '
@@ -73,7 +73,7 @@ def add_new_fish():
     
     return 'Success!'
 
-@fish.route('/fish/<id>', methods =['PUT']) 
+@Fish.route('/Fish/<id>', methods =['PUT']) 
 def update_fish(id): 
     """ updates fish details """
     # collecting data 
@@ -89,7 +89,7 @@ def update_fish(id):
     status = the_data['status']
     
     # make query and execute 
-    query = 'update customers set fishid = %s, housedin = %s, keptby = %s, notes = %s, sex = %s, species = %s, status = %s where fishid = %s'
+    query = 'update Fish set fishid = %s, housedin = %s, keptby = %s, notes = %s, sex = %s, species = %s, status = %s where fishid = %s'
     data = (id, housed, kept, notes, sex, species, status)
 
     cursor = db.get_db().cursor() 
@@ -98,7 +98,7 @@ def update_fish(id):
 
     return 'Success!'
 
-@fish.route('/fish/<id>', methods =['DELETE']) 
+@Fish.route('/Fish/<id>', methods =['DELETE']) 
 def delete_fish(id): 
     """ delete from a fish with a specific ID """
     the_data = request.json 
@@ -106,7 +106,7 @@ def delete_fish(id):
     current_app.logger.info(the_data)
     id = the_data['fishid']
 
-    query = 'delete from fish where fishid =' + str(id)
+    query = 'delete from Fish where fishid =' + str(id)
 
     current_app.logger.info(query) 
    
@@ -116,7 +116,7 @@ def delete_fish(id):
     db.get_db().commit()
     return 'Bye Fish!'
 
-@fish.route('/fish', methods =['DELETE']) 
+@Fish.route('/Fish', methods =['DELETE']) 
 def delete_allfish(): 
     """delete all fish where they are dead"""
     the_data = request.json 
@@ -124,7 +124,7 @@ def delete_allfish():
     current_app.logger.info(the_data) 
     
 
-    query = 'delete from fish where status = "dead"'
+    query = 'delete from Fish where status = "dead"'
 
     current_app.logger.info(query) 
 
@@ -134,11 +134,11 @@ def delete_allfish():
     db.get_db().commit() 
     return 'all dead fish deleted!'
 
-@fish.route('/fish/<housedin>', methods=['GET'])
+@Fish.route('/Fish/<housedin>', methods=['GET'])
 def get_fish_from_tank(housedin):
     """ selects all fish from a given tank """
     # create the query
-    query = 'select * from fish where HousedIn =' + str(housedin)
+    query = 'select * from Fish where HousedIn =' + str(housedin)
     current_app.logger.info(query)
 
     # execute the id 

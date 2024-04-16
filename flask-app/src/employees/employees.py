@@ -2,18 +2,18 @@ from flask import Blueprint, request, jsonify, make_response, current_app
 import json
 from src import db
 
-
 Employees = Blueprint('Employees', __name__)
 
 # Get all the employees from the database
 @Employees.route('/Employees', methods=['GET'])
-def Employees():
+def get_employees():
+    """ get all the employees from the database """
     # get a cursor object from the database
     cursor = db.get_db().cursor()
 
     # use cursor to query the database for a list of products
     # cursor.execute('SELECT id, product_code, product_name, list_price FROM products')
-    cursor.execute('')
+    cursor.execute('SELECT * from Employees')
 
     # grab the column headers from the returned data
     column_headers = [x[0] for x in cursor.description]

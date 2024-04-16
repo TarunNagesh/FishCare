@@ -2,16 +2,16 @@ from flask import Blueprint, request, jsonify, make_response, current_app
 import json
 from src import db
 
-reports = Blueprint('reports', __name__)
+Reports = Blueprint('Reports', __name__)
 
-@reports.route('/reports', methods=['GET'])
+@Reports.route('/Reports', methods=['GET'])
 def get_reports():
     """ Get all the products from the database """
     # get a cursor object from the database
     cursor = db.get_db().cursor()
 
     # use cursor to query the database for a list of products
-    cursor.execute('SELECT ReportID, FishID, MadeBy, SentTo, Type, Description FROM reports')
+    cursor.execute('SELECT ReportID, FishID, MadeBy, SentTo, Type, Description FROM Reports')
 
     # grab the column headers from the returned data
     column_headers = [x[0] for x in cursor.description]
@@ -30,10 +30,10 @@ def get_reports():
 
     return jsonify(json_data)
 
-@reports.route('/reports/<id>', methods=['GET'])
+@Reports.route('/Reports/<id>', methods=['GET'])
 def get_reports_detail (id):
     """ Gets tank details based on a query """
-    query = 'SELECT ReportID, FishID, MadeBy, SentTo, Type, Description FROM reports WHERE id = ' + str(id)
+    query = 'SELECT ReportID, FishID, MadeBy, SentTo, Type, Description FROM Reports WHERE id = ' + str(id)
     current_app.logger.info(query)
 
     cursor = db.get_db().cursor()
@@ -45,7 +45,7 @@ def get_reports_detail (id):
         json_data.append(dict(zip(column_headers, row)))
     return jsonify(json_data)
 
-@reports.route('/reports/<id>', methods=['POST'])
+@Reports.route('/Reports/<id>', methods=['POST'])
 def add_report(id): 
     """ adds a report """
      # collecting data from the request object 
@@ -57,7 +57,7 @@ def add_report(id):
 
     keys = [key for key in the_data if key != 'ReportID']
     # Constructing the query
-    query = f'INSERT INTO reports ({", ".join(keys)}) VALUES ({", ".join(keys)})'
+    query = f'INSERT INTO Reports ({", ".join(keys)}) VALUES ({", ".join(keys)})'
 
     # executing and committing the insert statement 
     cursor = db.get_db().cursor()
@@ -67,7 +67,7 @@ def add_report(id):
     return 'Success!'
 
 # Delete a procedure
-@reports.route('/reports', methods = ['DELETE'])
+@Reports.route('/Reports', methods = ['DELETE'])
 def delete_report():
     """ deletes a report """
     the_data = request.json
@@ -75,7 +75,7 @@ def delete_report():
 
     id = the_data['ReportID']
 
-    query = 'DELETE FROM reports WHERE id = ' + id
+    query = 'DELETE FROM Reports WHERE id = ' + id
     current_app.logger.info(query)
 
     # executing and committing the insert statement 
@@ -84,10 +84,10 @@ def delete_report():
     db.get_db().commit()
     return 'Report deleted!'
 
-@reports.route('/reports_managers/<id>', methods=['GET'])
+@Reports.route('/Reports_managers/<id>', methods=['GET'])
 def get_report_author(id): 
     """ gets all the managers in the tanks""" 
-    query = 'SELECT MadeBy FROM reports WHERE reportid = ' + str(id)
+    query = 'SELECT MadeBy FROM Reports WHERE reportid = ' + str(id)
     current_app.logger.info(query)
 
     cursor = db.get_db().cursor()
@@ -101,14 +101,14 @@ def get_report_author(id):
 
     return jsonify(json_data)
 
-@reports.route('/reports/<id>', methods=['PUT'])
+@Reports.route('/Reports/<id>', methods=['PUT'])
 def update_report_details(id): 
     """ updates a given report's details""" 
     data = request.json
 
     vals = [val for key, val in data.items() if key != 'ReportID']
 
-    query = "UPDATE reports SET ReportID=%s, FishID=%s, MadeBy=%s, SentTo=%s, Type=%s, Description=%s WHERE ReportID = %s"
+    query = "UPDATE Reports SET ReportID=%s, FishID=%s, MadeBy=%s, SentTo=%s, Type=%s, Description=%s WHERE ReportID = %s"
 
     cursor = db.get_db().cursor()
     data = tuple(vals)
