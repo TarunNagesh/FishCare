@@ -11,7 +11,7 @@ def get_tanks():
     cursor = db.get_db().cursor()
 
     # use cursor to query the database for a list of products
-    cursor.execute('SELECT TankID, ManagedBy, OverseenBy, Temp, TimeCleaned, WaterType, PHlevel, Food, TimeFed, Status FROM Tanks')
+    cursor.execute('SELECT TankID, ManagedBy, OverseenBy, AssignedTo, Temp, TimeCleaned, WaterType, PHlevel, Food, TimeFed, Status FROM Tanks')
 
     # grab the column headers from the returned data
     column_headers = [x[0] for x in cursor.description]
@@ -102,19 +102,31 @@ def get_tank_managers(id):
 
 
 @Tanks.route('/Tanks', methods=['POST'])
-def add_new_tanks():
-    """ add a new tank """
-     # collecting data from the request object 
+def add_new_tank():
+    """ adds a new fish to the table """
+    # collecting data from the request object 
     the_data = request.json
     current_app.logger.info(the_data)
 
     #extracting the variable
-    vals = [f'"{val}"' for key, val in the_data.items() if key != 'TankID']
+    tankid = the_data['TankID']
+    managed= the_data['ManagedBy']
+    overseen = the_data['OverseenBy']
+    assigned = the_data['AssignedTo']
+    food = the_data['Food'] 
+    ph = the_data['PHlevel']
+    status = the_data['Status']
+    temp = the_data['Temp']
+    cleaned = the_data['TimeCleaned']
+    fed = the_data['TimeFed']
+    type = the_data['WaterType']
 
-    keys = [key for key in the_data if key != 'TankID']
+    vals = "=%s, ".join(the_data.keys())
+    # Constructing the query
+    query = "INSERT INTO Tanks VALUES(TankID=%s, ManagedBy=%s, OverseenBy=%s, AssignedTo=%s, Food=%s, PHlevel=%s, Status=%s, Temp=%s, TimeCleaned=%s, TimeFed=%s, WaterType=%s WHERE TankID = %s"
+    data = tuple(the_data.values())
 
-    # constructing the query
-    query = f'INSERT INTO Tanks ({", ".join(keys)}) VALUES ({", ".join(keys)})'
+    current_app.logger.info(query, data)
 
     # executing and committing the insert statement 
     cursor = db.get_db().cursor()
