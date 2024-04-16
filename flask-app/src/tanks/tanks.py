@@ -49,17 +49,22 @@ def get_tanks_detail (id):
 def update_tank_details(): 
     """ updates a tank's details"""
     data = request.json
-
-    vals = [val for key, val in data.items() if key != 'TankID']
+    # current_app.logger.info(cust_info)
+    tank_id = data['TankID']
+    food = data['Food']
+    phlevel = data['PHlevel']
+    status = data['Status']
+    temp = data['Temp']
+    timecleaned = data['TimeCleaned']
+    timefed = data['TimeFed']
 
     query = "UPDATE Tanks SET Food=%s, PHlevel=%s, Status=%s, Temp=%s, TimeCleaned=%s, TimeFed=%s WHERE TankID = %s"
-
+    data = (food, phlevel, status, temp, timecleaned, timefed, tank_id)
     cursor = db.get_db().cursor()
-    data = tuple(vals)
     r = cursor.execute(query, data)
     db.get_db().commit()
+    return 'customer updated'
 
-    return 'Updated successfully!'
 
 @Tanks.route('/Tanks', methods = ['DELETE'])
 def delete_tank():
