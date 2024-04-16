@@ -48,76 +48,66 @@ def add_new_fish():
 
     #extracting the variable
     fishID = the_data['FishID']
-    housed= the_data['housedin']
-    kept = the_data['keptby']
-    notes = the_data['notes'] 
-    sex = the_data['sex']
-    species = the_data['species']
-    status = the_data['status']
+    housed= the_data['HousedIn']
+    kept = the_data['KeptBy']
+    notes = the_data['Notes'] 
+    sex = the_data['Sex']
+    species = the_data['Species']
+    status = the_data['Status']
 
     # Constructing the query
-    query = 'insert into Fish values ("'
-    query += fishID + '", "'
-    query += housed + '", "'
-    query += kept + '", '
-    query += notes + '", '
-    query += sex + '", '
-    query += species + '", '
-    query += status + ')'
+    query = 'insert into Fish values (%s,%s,%s,%s,%s,%s,%s)'
     current_app.logger.info(query)
 
     # executing and committing the insert statement 
     cursor = db.get_db().cursor()
-    cursor.execute(query)
+    cursor.execute(query, (fishID, housed, kept, notes, sex, species, status))
     db.get_db().commit()
     
     return 'Success!'
 
-@Fish.route('/Fish/<id>', methods =['PUT']) 
-def update_fish(id): 
+@Fish.route('/Fish', methods =['PUT']) 
+def update_fish(): 
     """ updates fish details """
     # collecting data 
     the_data = request.json 
 
     # extracting the information
-    id = the_data['fishid']
-    housed= the_data['housedin']
-    kept = the_data['keptby']
-    notes = the_data['notes'] 
-    sex = the_data['sex']
-    species = the_data['species']
-    status = the_data['status']
+    id = the_data['FishID']
+    housed= the_data['HousedIn']
+    kept = the_data['KeptBy']
+    notes = the_data['Notes'] 
+    status = the_data['Status']
     
     # make query and execute 
-    query = 'update Fish set fishid = %s, housedin = %s, keptby = %s, notes = %s, sex = %s, species = %s, status = %s where fishid = %s'
-    data = (id, housed, kept, notes, sex, species, status)
+    query = 'update Fish set HousedIn = %s, KeptBy = %s, Notes = %s, Status = %s where FishID = %s'
 
     cursor = db.get_db().cursor() 
-    cursor.execute(query, data)
+    cursor.execute(query, (housed, kept, notes, status, id))
     db.get_db().commit()
 
     return 'Success!'
 
-@Fish.route('/Fish/<id>', methods =['DELETE']) 
-def delete_fish(id): 
+@Fish.route('/Fish', methods =['DELETE']) 
+def delete_fish(): 
     """ delete from a fish with a specific ID """
     the_data = request.json 
     
     current_app.logger.info(the_data)
-    id = the_data['fishid']
+    id = the_data['FishID']
 
-    query = 'delete from Fish where fishid =' + str(id)
+    query = 'delete from Fish where FishID = %s'
 
     current_app.logger.info(query) 
    
     # execute and commit query 
     cursor = db.get_db().cursor() 
-    cursor.execute(query)
+    cursor.execute(query, (id))
     db.get_db().commit()
     return 'Bye Fish!'
 
-@Fish.route('/Fish', methods =['DELETE']) 
-def delete_allfish(): 
+@Fish.route('/Fish/<id>', methods =['DELETE']) 
+def delete_allfish(id): 
     """delete all fish where they are dead"""
     the_data = request.json 
 

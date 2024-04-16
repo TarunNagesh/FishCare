@@ -60,16 +60,11 @@ def add_new_prescriptions():
     dosage = the_data['Dosage']
 
     # Constructing the query
-    query = 'INSERT INTO Prescriptions (ProcFor, MedID, Medicine, Dosage) VALUES ("'
-    query += procedure_for + '", "'
-    query += id + '", "'
-    query += med + '", "'
-    query += dosage + ')'
-    current_app.logger.info(query)
+    query = 'INSERT INTO Prescriptions VALUES (%s, %s, %s, %s)'
 
     # executing and committing the insert statement 
     cursor = db.get_db().cursor()
-    cursor.execute(query)
+    cursor.execute(query, (procedure_for, id, med, dosage))
     db.get_db().commit()
     
     return 'Success!'

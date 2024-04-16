@@ -45,23 +45,25 @@ def get_reports_detail (id):
         json_data.append(dict(zip(column_headers, row)))
     return jsonify(json_data)
 
-@Reports.route('/Reports/<id>', methods=['POST'])
-def add_report(id): 
+@Reports.route('/Reports', methods=['POST'])
+def add_report(): 
     """ adds a report """
      # collecting data from the request object 
     the_data = request.json
     current_app.logger.info(the_data)
+    rep = the_data["ReportID"]
+    fish = the_data["FishID"]
+    made = the_data["MadeBy"]
+    sent = the_data["SentTo"]
+    type = the_data["Type"]
+    desc = the_data["Description"]
 
-    #extracting the variable
-    vals = [f'"{val}"' for key, val in the_data.items() if key != 'ReportID']
-
-    keys = [key for key in the_data if key != 'ReportID']
     # Constructing the query
-    query = f'INSERT INTO Reports ({", ".join(keys)}) VALUES ({", ".join(keys)})'
+    query = 'INSERT INTO Reports VALUES(%s, %s, %s, %s, %s, %s)'
 
     # executing and committing the insert statement 
     cursor = db.get_db().cursor()
-    cursor.execute(query)
+    cursor.execute(query, (rep, fish, made, sent, type, desc))
     db.get_db().commit()
     
     return 'Success!'

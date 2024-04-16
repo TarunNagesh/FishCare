@@ -46,28 +46,20 @@ def add_new_plan():
     current_app.logger.info(the_data)
 
     #extracting the variable
-    id = the_data['PlanId']
+    id = the_data['PlanID']
     madeBy = the_data['MadeBy']
     approvedBy = the_data['ApprovedBy']
     type = the_data['Type']
     details = the_data['Details']
-    status = the_data['Status']
     cost = the_data['Cost']
+    status = the_data['Status']
 
     # Constructing the query
-    query = 'insert into Plans (PlanID, MadeBy, ApprovedBy, Type, Details, Status, Cost) values ("'
-    query += id + '", "'
-    query += madeBy + '", "'
-    query += approvedBy + '", "'
-    query += type + '", "'
-    query += details + '", "'
-    query += status + '", "'
-    query += str(cost) + ')'
-    current_app.logger.info(query)
+    query = 'insert into Plans values (%s, %s, %s, %s, %s, %s, %s)'
 
     # executing and committing the insert statement 
     cursor = db.get_db().cursor()
-    cursor.execute(query)
+    cursor.execute(query, (id, madeBy, approvedBy, type, details, status, cost))
     db.get_db().commit()
     
     return 'Success!'

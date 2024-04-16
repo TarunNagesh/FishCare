@@ -109,13 +109,15 @@ def update_employee():
 def delete_employee_no_hours():
     the_data = request.json
     current_app.logger.info(the_data) 
+    employee_id = the_data['EmpID']
 
-    query = 'DELETE FROM Employees WHERE Hours == 0'
+    query = 'DELETE FROM Employees WHERE EmpID = %s'
+    data = (employee_id)
     current_app.logger.info(query)
 
     # executing and committing the insert statement 
     cursor = db.get_db().cursor()
-    cursor.execute(query)
+    r = cursor.execute(query, data)
     db.get_db().commit()
     return 'Employee fired!'
 

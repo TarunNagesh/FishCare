@@ -47,17 +47,11 @@ def add_new_plans():
     sent = the_data['DateSent']
 
     # Constructing the query
-    query = 'INSERT INTO Finances (TransactionID, ManagedBy, Recievables, Payables, DateSent) values ("'
-    query += id + '", "'
-    query += manager + '", "'
-    query += rec + '", "'
-    query += pay + '", "'
-    query += sent + '", "'
-    current_app.logger.info(query)
+    query = 'INSERT INTO Finances VALUES (%s, %s, %s, %s, %s)'
 
     # executing and committing the insert statement 
     cursor = db.get_db().cursor()
-    cursor.execute(query)
+    cursor.execute(query, (id, manager, rec, pay, sent))
     db.get_db().commit()
     
     return 'Success!'

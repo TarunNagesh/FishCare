@@ -55,25 +55,18 @@ def add_new_procedure():
 
     #extracting the variable
     surgeon = the_data['Surgeon']
-    procid = the_data['Procid']
+    procid = the_data['ProcID']
     fishid = the_data['Fish']
     description = the_data['Description']
     proctype = the_data['Type']
     result = the_data['Result']
 
     # Constructing the query
-    query = 'INSERT INTO Procedures (Surgeon, Procid, Fish, Description, Type, Result) VALUES ("'
-    query += surgeon + '", "'
-    query += procid + '", "'
-    query += fishid + '", "'
-    query += description + '", "'
-    query += proctype + '", "'
-    query += result + ')'
-    current_app.logger.info(query)
+    query = 'INSERT INTO Procedures VALUES (%s, %s, %s, %s, %s, %s)'
 
     # executing and committing the insert statement 
     cursor = db.get_db().cursor()
-    cursor.execute(query)
+    cursor.execute(query, (surgeon, procid, fishid, description, proctype, result))
     db.get_db().commit()
     
     return 'Success!'
@@ -83,16 +76,13 @@ def update_procedure():
     """ Update the details of a procedure """
     proc_info = request.json
     # current_app.logger.info(cust_info)
-    surgeon = proc_info['Surgeon']
-    procid = proc_info['Procid']
-    fishid = proc_info['Fish']
+    procid = proc_info['ProcID']
     description = proc_info['Description']
-    proctype = proc_info['Type']
     result = proc_info['Result']
 
 
-    query = 'UPDATE Procedures SET Surgeon = %s, Fish = %s, Description = %s, Type = %s, Result = %s WHERE ProcID = %s'
-    data = (surgeon, fishid, description, proctype, result, procid)
+    query = 'UPDATE Procedures SET Description = %s, Result = %s WHERE ProcID = %s'
+    data = (description,result, procid)
 
     cursor = db.get_db().cursor()
     r = cursor.execute(query, data)
