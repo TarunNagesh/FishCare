@@ -30,7 +30,7 @@ def get_tanks():
 
     return jsonify(json_data)
 
-@Tanks.route('/Tanks', methods=['GET'])
+@Tanks.route('/Tanks/<id>', methods=['GET'])
 def get_tanks_detail (id):
     """ Gets tank details based on a query """
     query = 'SELECT TankID, ManagedBy, OverseenBy, Temp, TimeCleaned, WaterType, PHlevel, Food, TimeFed, Status FROM Tanks WHERE id = ' + str(id)
@@ -52,7 +52,7 @@ def update_tank_details():
 
     vals = [val for key, val in data.items() if key != 'TankID']
 
-    query = "UPDATE Tanks SET Temp=%s, TimeCleaned=%s, PHlevel=%s, Food=%s, TimeFed=%s, Status=%s WHERE TankID = %s"
+    query = "UPDATE Tanks SET ManagedBy=%s, OverseenBy=%s, Temp=%s, TimeCleaned=%s, WaterType=%s, PHlevel=%s, Food=%s, TimeFed=%s, Status=%s WHERE TankID = %s"
 
     cursor = db.get_db().cursor()
     data = tuple(vals)
