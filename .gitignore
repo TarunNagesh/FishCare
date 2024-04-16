@@ -1,5 +1,5 @@
 .DS_Store
-secrets/db_password.txt
-secrets/db_root_password.txt 
+secrets/db_password.txt.txt
+secrets/db_root_password.txt.txt
 __pycache__
 stacks
