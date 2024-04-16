@@ -52,7 +52,7 @@ def update_tank_details():
 
     vals = [val for key, val in data.items() if key != 'TankID']
 
-    query = "UPDATE Tanks SET Temp=%s, TimeCleaned=%s, WaterType=%s, PHlevel=%s, Food=%s, TimeFed=%s, Status=%s WHERE TankID = %s"
+    query = "UPDATE Tanks SET Food=%s, PHlevel=%s, Status=%s, Temp=%s, TimeCleaned=%s, TimeFed=%s WHERE TankID = %s"
 
     cursor = db.get_db().cursor()
     data = tuple(vals)
