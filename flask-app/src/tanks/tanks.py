@@ -121,10 +121,9 @@ def add_new_tank():
     fed = the_data['TimeFed']
     type = the_data['WaterType']
 
-    vals = "=%s, ".join(the_data.keys())
     # Constructing the query
     query = "INSERT INTO Tanks VALUES(TankID=%s, ManagedBy=%s, OverseenBy=%s, AssignedTo=%s, Food=%s, PHlevel=%s, Status=%s, Temp=%s, TimeCleaned=%s, TimeFed=%s, WaterType=%s WHERE TankID = %s"
-    data = tuple(the_data.values())
+    data = (tankid, managed, overseen, assigned, food, ph, status, temp,cleaned, fed, type)
 
     current_app.logger.info(query, data)
 
