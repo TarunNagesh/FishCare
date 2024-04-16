@@ -122,14 +122,14 @@ def add_new_tank():
     type = the_data['WaterType']
 
     # Constructing the query
-    query = "INSERT INTO Tanks VALUES(TankID=%s, ManagedBy=%s, OverseenBy=%s, AssignedTo=%s, Food=%s, PHlevel=%s, Status=%s, Temp=%s, TimeCleaned=%s, TimeFed=%s, WaterType=%s WHERE TankID = %s"
-    data = (tankid, managed, overseen, assigned, food, ph, status, temp,cleaned, fed, type)
+    query = "INSERT INTO Tanks VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
 
-    current_app.logger.info(query, data)
+
+    current_app.logger.info(query, (tankid, managed, overseen, assigned, temp, cleaned, type, ph, food, fed, status))
 
     # executing and committing the insert statement 
     cursor = db.get_db().cursor()
-    cursor.execute(query)
+    cursor.execute(query, (tankid, managed, overseen, assigned, temp, cleaned, type, ph, food, fed, status))
     db.get_db().commit()
     
     return 'Success!'
