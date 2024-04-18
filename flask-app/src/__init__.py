@@ -40,7 +40,7 @@ def create_app():
     from src.prescriptions.prescriptions import Prescriptions
     from src.procedures.procedures  import Procedures
     from src.reports.reports import Reports
-    from src.tanks.Tanks  import Tanks
+    from src.tanks.tanks  import Tanks
 
 
     # Register the routes from each Blueprint with the app object
