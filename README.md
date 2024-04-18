@@ -19,4 +19,4 @@ FishCare was developed with a `<insert lang>` backend and Appsmith UI.
 - Appsmith
 
 # Demo 
-Please check out our demo (here!)[https://youtu.be/cnE6l54q4hk]
+Please check out our demo [here!](https://youtu.be/cnE6l54q4hk)
